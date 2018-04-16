@@ -11,6 +11,9 @@
         "assets",
         "favicon.ico"
       ],
+      "scripts": [
+        "../node_modules/pouchdb/dist/pouchdb.js"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -20,9 +23,6 @@
       "prefix": "fifteen",
       "styles": [
         "styles.scss"
-      ],
-      "scripts": [
-        "../node_modules/pouchdb/dist/pouchdb.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import PouchDB from 'pouchdb';
+import * as $PouchDB from 'pouchdb';
+const PouchDB = $PouchDB['default'];
 
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit () {
 
-      let db = new PouchDB('mydb');
+      let db = new PouchDB('fifteen_db');
       console.log(db);
   }
 
