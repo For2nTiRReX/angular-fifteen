@@ -1,0 +1,12 @@
+<div id="grid" #grid>
+    <div *ngFor="let label of labels"
+         [ngClass]="{
+            'tile cell': true,
+            'blank':label === ''
+          }"
+         (click)="clickTile($event)">
+        {{label}}
+    </div>
+</div>
+<button class="button" id="scramble">Scramble</button>
+<span id="clock"></span>

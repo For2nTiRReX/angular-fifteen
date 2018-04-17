@@ -3,14 +3,19 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { RootRoutingModule } from './root-routing.module';
+import {PlayGameComponent} from './play/play-game/play-game.component';
+
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PlayGameComponent
   ],
   imports: [
-    BrowserModule
+    RootRoutingModule,
+    BrowserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

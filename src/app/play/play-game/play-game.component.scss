@@ -1,0 +1,90 @@
+#grid {
+  display: grid;
+  grid-template-columns: 80px 80px 80px 80px;
+}
+
+.cell {
+  line-height: 74px;
+  height: 74px;
+  text-align: center;
+  font-size: 48px;
+  margin: 3px;
+  position: relative;
+  border-style: solid;
+  border-radius: 12px;
+  border-width: 2px;
+  border-color: black;
+  background: linear-gradient(to bottom, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
+  user-select: none;
+  &.blank {
+    background: none;
+    border-style: none;
+    box-shadow: none;
+  }
+  &.hidden {
+    visibility: hidden;
+  }
+  &.slideright {
+    animation-name: slideright;
+    animation-duration: 0.5s;
+  }
+  &.slideleft {
+    animation-name: slideleft;
+    animation-duration: 0.5s;
+  }
+  &.slideup {
+    animation-name: slideup;
+    animation-duration: 0.5s;
+  }
+  &.slidedown {
+    animation-name: slidedown;
+    animation-duration: 0.5s;
+  }
+  &.winner {
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emoji_Grinning_Face_Smiling_Eyes.svg/128px-Emoji_Grinning_Face_Smiling_Eyes.svg.png);
+    background-size: contain;
+  }
+}
+
+
+@keyframes slideright {
+  from {left: 0px;}
+  to {left: 80px;}
+}
+
+@keyframes slideleft {
+  from {left: 0px;}
+  to {left: -80px;}
+}
+
+@keyframes slideup {
+  from {top: 0px;}
+  to {top: -80px;}
+}
+
+@keyframes slidedown {
+  from {top: 0px;}
+  to {top: 80px;}
+}
+
+
+#clock {
+  font-family: monospace;
+  font-size: 48px;
+}
+
+#clock.slow {
+  color: red;
+}
+
+.button {
+  background-color: chocolate;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px;
+}
