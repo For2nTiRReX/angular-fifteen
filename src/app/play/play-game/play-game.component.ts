@@ -91,11 +91,31 @@ export class PlayGameComponent implements OnInit {
       a[j] = tmp;
   }
 
-  public clickTile(event) {
-      //event.preventDefault();
-      console.log(event);
-      console.log(document.getElementById('grid'));
+  public makeMove(direction) {
+      console.log(direction)
+  }
 
+  public clickTile(event, label) {
+      console.log(this.labels);
+      const nextEmtyTile = this.labels.indexOf(label);
+
+      if (label - 1 === this.emptycell && (label % 4) !== 0) {
+          this.makeMove('left');
+      }
+      if (label + 1 === this.emptycell && (label % 4) !== 3) {
+          this.makeMove('right');
+      }
+      if (label - 4 === this.emptycell) {
+          this.makeMove('up');
+      }
+      if (label + 4 === this.emptycell) {
+          this.makeMove('down');
+      }
+      this.labels[this.emptycell] = label;
+      this.labels[nextEmtyTile] = '';
+      this.emptycell = nextEmtyTile;
+
+      return;
 
       this.cells = this.grid.children;
       if (this.wait) { return false; }

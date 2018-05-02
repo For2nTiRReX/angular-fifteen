@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { RootRoutingModule } from './root-routing.module';
 import {PlayGameComponent} from './play/play-game/play-game.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { TopPlayersComponent } from './top-players/top-players.component';
 
 
