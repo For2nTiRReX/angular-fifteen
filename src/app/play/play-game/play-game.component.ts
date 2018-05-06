@@ -92,15 +92,12 @@ export class PlayGameComponent implements OnInit {
   }
 
   public clickTile(event) {
-      //event.preventDefault();
       console.log(event);
-      console.log(document.getElementById('grid'));
-
-
-      this.cells = this.grid.children;
+      console.log(this);
+      console.log(this.index);
       if (this.wait) { return false; }
-      for (let i = 0; i < this.cells.length; i++) {
-          if (event.target === this.cells[i]) {
+      for (let i = 0; i < this.labels.length; i++) {
+          if (event.target.innerText === this.labels[i]) {
               this.index = i;
               this.wait = this.slideLeft() || this.slideRight() || this.slideUp() || this.slideDown();
           }
@@ -132,8 +129,8 @@ export class PlayGameComponent implements OnInit {
   }
 
   public doSlide(direction) {
-      this.cells[this.emptycell].className = 'cell hidden';
-      this.cells[this.index].className = 'cell slide' + direction;
+      //this.cells[this.emptycell].className = 'cell hidden';
+      //this.cells[this.index].className = 'cell slide' + direction;
       setTimeout(this.swap, 400);
       if (this.interval === null) {
           this.interval = setInterval(this.showTime, 1000);
@@ -143,10 +140,18 @@ export class PlayGameComponent implements OnInit {
   }
 
   public swap() {
-      this.cells[this.emptycell].innerHTML = this.cells[this.index].innerHTML;
+      console.log(this);
+      console.log(this.index);
+      console.log(this.emptycell);
+      console.log(this.labels);
+      console.log(this.labels[this.emptycell]);
+      console.log(this.labels[this.index]);
+      this.labels[this.emptycell] = this.labels[this.index];
+      this.labels[this.index] = '';
+      /*this.cells[this.emptycell].innerHTML = this.cells[this.index].innerHTML;
       this.cells[this.emptycell].className = 'cell';
       this.cells[this.index].innerHTML = '';
-      this.cells[this.index].className = 'cell blank';
+      this.cells[this.index].className = 'cell blank';*/
       this.emptycell = this.index;
       this.wait = this.checkWin();
   }
