@@ -91,10 +91,40 @@ export class PlayGameComponent implements OnInit {
       a[j] = tmp;
   }
 
+<<<<<<< HEAD
   public clickTile(event) {
       console.log(event);
       console.log(this);
       console.log(this.index);
+=======
+  public makeMove(direction) {
+      console.log(direction)
+  }
+
+  public clickTile(event, label) {
+      console.log(this.labels);
+      const nextEmtyTile = this.labels.indexOf(label);
+
+      if (label - 1 === this.emptycell && (label % 4) !== 0) {
+          this.makeMove('left');
+      }
+      if (label + 1 === this.emptycell && (label % 4) !== 3) {
+          this.makeMove('right');
+      }
+      if (label - 4 === this.emptycell) {
+          this.makeMove('up');
+      }
+      if (label + 4 === this.emptycell) {
+          this.makeMove('down');
+      }
+      this.labels[this.emptycell] = label;
+      this.labels[nextEmtyTile] = '';
+      this.emptycell = nextEmtyTile;
+
+      return;
+
+      this.cells = this.grid.children;
+>>>>>>> 6b8e30dfb956967fd81ebc9559b89d408c176afc
       if (this.wait) { return false; }
       for (let i = 0; i < this.labels.length; i++) {
           if (event.target.innerText === this.labels[i]) {
