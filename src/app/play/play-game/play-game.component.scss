@@ -1,21 +1,20 @@
 #grid {
-  display: grid;
-  grid-template-columns: 80px 80px 80px 80px;
+  /*display: grid;
+  grid-template-columns: 80px 80px 80px 80px;*/
+  position: relative;
 }
 
 .cell {
+  position: absolute;
   line-height: 74px;
   height: 74px;
   text-align: center;
   font-size: 48px;
-  margin: 3px;
-  position: relative;
   border-style: solid;
   border-radius: 12px;
-  border-width: 2px;
-  border-color: black;
   background: linear-gradient(to bottom, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
   user-select: none;
+  transition: all .8s ease;
   &.blank {
     background: none;
     border-style: none;
@@ -48,23 +47,23 @@
 
 
 @keyframes slideright {
-  from {left: 0px;}
-  to {left: 80px;}
+  from {transform: translate(0,0)}
+  to { transform: translate(calc(100% + 6px), 0);}
 }
 
 @keyframes slideleft {
-  from {left: 0px;}
-  to {left: -80px;}
+  from {transform: translate(0,0)}
+  to { transform: translate(calc(-100% - 6px), 0);}
 }
 
 @keyframes slideup {
-  from {top: 0px;}
-  to {top: -80px;}
+  from {transform: translate(0,0)}
+  to { transform: translate(0, calc(-100% - 6px));}
 }
 
 @keyframes slidedown {
-  from {top: 0px;}
-  to {top: 80px;}
+  from {transform: translate(0,0)}
+  to { transform: translate(0, calc(+100% + 6px));}
 }
 
 

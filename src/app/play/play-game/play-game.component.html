@@ -1,11 +1,12 @@
-<div id="grid" #grid>
-    <div *ngFor="let label of labels"
+<div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
+    <div *ngFor="let item of labels"
          [ngClass]="{
             'tile cell': true,
-            'blank':label === ''
+            'blank': item.isEmpty === true
           }"
-         (click)="clickTile($event,label)">
-        {{label}}
+         [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px' }"
+         (click)="clickTile($event,item)">
+        {{item.label}}
     </div>
 </div>
 <button class="button" id="scramble">Scramble</button>
