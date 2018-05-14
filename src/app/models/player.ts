@@ -1,4 +1,6 @@
-export interface Player {
-    id: string;
-    name: string;
+export class Player {
+    constructor (
+        id: string,
+        name: string,
+    ) {}
 }

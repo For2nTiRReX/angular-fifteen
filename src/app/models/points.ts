@@ -1,8 +1,10 @@
-import {Player} from './player';
+import {Player} from './index';
 
-export interface Points {
-    id: string;
-    moves: number;
-    time: number;
-    player?: Player;
+export class Points {
+    constructor(
+        id: string,
+        moves: number,
+        time: number,
+        player?: Player,
+    ){}
 }

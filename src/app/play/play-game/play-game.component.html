@@ -1,13 +1,14 @@
+<span id="clock" class="{{clockStateClass}}">{{clock}}</span>
 <div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
-    <div *ngFor="let item of labels"
+    <div *ngFor="let item of tiles"
          [ngClass]="{
             'tile cell': true,
             'blank': item.isEmpty === true
           }"
          [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px' }"
-         (click)="clickTile($event,item)">
+         (click)="swapElements($event,item);">
         {{item.label}}
     </div>
 </div>
-<button class="button" id="scramble">Scramble</button>
-<span id="clock"></span>
+<button class="button" id="pause">Pause</button>
+<button class="button" id="new_game" (click)="newGame();">New Game</button>

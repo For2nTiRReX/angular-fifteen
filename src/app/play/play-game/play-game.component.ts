@@ -1,21 +1,5 @@
-import { Component, ViewChild, OnInit, ElementRef, AfterViewInit } from '@angular/core';
-
-export class Tile {
-
-    public id: number;
-    public label: string;
-    public positionTop: number;
-    public positionLeft: number;
-    public isEmpty: boolean;
-
-    constructor(id, label, positionTop, positionLeft, isEmpty = false) {
-        this.id = id;
-        this.label = label;
-        this.positionTop = positionTop;
-        this.positionLeft = positionLeft;
-        this.isEmpty = isEmpty;
-    }
-}
+import { Component, OnInit } from '@angular/core';
+import { Tile } from '../../models/index';
 
 @Component({
     selector: 'fifteen-play-game',
@@ -24,39 +8,166 @@ export class Tile {
 })
 
 
-export class PlayGameComponent implements OnInit {
+export class PlayGameComponent implements OnInit  {
 
-    grid: any;
-    scramble: any;
-    clock: any;
-    cells: any;
-    index: any;
-    wait: any;
-    elapsedTime: any;
+    tiles: Array<Tile>;
     interval: any;
-    emptycell: any;
-    labels: Array<Tile>;
-    labelsFront: Array<string>;
+
+    clock: string;
+    clockStateClass: string;
+
+    elapsedTime: number;
+    emptyTileIndex: number;
     tileWidth: number;
     tileHeight: number;
     tileGap: number;
     containerWidth: number;
-    animationClass: string;
-    animationTarget: number;
 
     constructor() { }
 
     ngOnInit() {
-        /*this.grid = document.getElementById('grid');
-        this.scramble = document.getElementById('scramble');
-        this.clock = document.getElementById('clock');
-        this.scramble.addEventListener('click', this.initialize);
-        this.index = null;
-        this.wait = true;
-        this.elapsedTime = null;*/
+        this.tiles = [];
+        this.containerWidth = 300;
+        this.tileGap = 6;
+        this.tileWidth = this.containerWidth / 4;
+        this.tileHeight = this.containerWidth / 4;
         this.initialize();
     }
 
+    public initialize() {
+        let labelsInit = [];
+        this.elapsedTime = 0;
+        this.clock = '0:00';
+        if (this.interval !== null) {
+            clearInterval(this.interval);
+        }
+        this.interval = null;
+
+        for (let i = 0; i <= 14; i++) {
+            labelsInit[i] = i + 1 + '';
+        }
+        labelsInit[15] = '';
+        let parity = this.shuffle(labelsInit);
+        this.emptyTileIndex = labelsInit.indexOf('');
+        parity += this.emptyTileIndex + Math.floor(this.emptyTileIndex / 4);
+
+        // Switch labels if necessary to guarantee that a solution exists.
+        // See https://en.wikipedia.org/wiki/15_puzzle#Solvability
+        if (parity % 2) { this.exchange(labelsInit, 0, 2); }
+
+        let k = 0;
+        for (let i = 0; i < labelsInit.length / 4; i++) {
+            for (let j = 0;j < labelsInit.length / 4; j++) {
+                this.tiles[k] = new Tile(k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
+                k++;
+            }
+        }
+
+    }
+
+    public swapElements(event, label) {
+        console.log(12);
+        const currTileIndex = this.tiles.indexOf(label);
+        let labelsTemporary = [];
+        labelsTemporary = this.tiles.slice();
+
+        if (currTileIndex - 1 === this.emptyTileIndex && (currTileIndex % 4) !== 0) {
+            console.log('slideleft');
+            this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft - this.tileWidth;
+            this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft + this.tileWidth;
+        }
+        else if (currTileIndex + 1 === this.emptyTileIndex && (currTileIndex % 4) !== 3) {
+            console.log('slideright');
+            this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft + this.tileWidth;
+            this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft - this.tileWidth;
+        }
+        else if (currTileIndex - 4 === this.emptyTileIndex) {
+            console.log('slideup');
+            this.tiles[currTileIndex].positionTop = this.tiles[currTileIndex].positionTop - this.tileWidth;
+            this.tiles[this.emptyTileIndex].positionTop = this.tiles[this.emptyTileIndex].positionTop + this.tileWidth;
+        }
+        else if (currTileIndex + 4 === this.emptyTileIndex) {
+            console.log('slidedown');
+            this.tiles[currTileIndex].positionTop = this.tiles[currTileIndex].positionTop + this.tileWidth;
+            this.tiles[this.emptyTileIndex].positionTop = this.tiles[this.emptyTileIndex].positionTop - this.tileWidth;
+        }
+        else {
+            return;
+        }
+
+        console.log(this.tiles);
+        // this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft + 150;
+        // this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft - 150;
+        // labelTemporary = this.tiles[this.emptyTileIndex];
+        // this.tiles[this.emptyTileIndex] = this.tiles[currTileIndex];
+        // this.tiles[currTileIndex] = labelTemporary;
+        labelsTemporary[currTileIndex] = this.tiles[this.emptyTileIndex];
+        labelsTemporary[this.emptyTileIndex] = this.tiles[currTileIndex];
+        this.tiles = labelsTemporary;
+        this.tiles.filter( function( element, index ) {
+            if (element.isEmpty) {
+                this.emptyTileIndex = index;
+                return;
+            }
+        }, this);
+        console.log(this.tiles);
+
+        if (this.interval === null) {
+            this.interval = setInterval(() => { this.showTime(); }, 1000);
+            this.elapsedTime = 0;
+        }
+        this.checkWin();
+
+        return;
+    }
+
+
+
+
+    public checkWin() {
+         for (let i = 0; i <= 14; i++) {
+             if (+this.tiles[i].label != i + 1) {
+                return false;
+             }
+         }
+         console.log('You win!');
+         clearInterval(this.interval);
+         this.interval = null;
+         return true;
+    }
+
+    public showTime() {
+
+        this.elapsedTime++;
+        if (this.elapsedTime == 180) {
+            this.clockStateClass = 'slow';
+        }
+        let timeString = '';
+        let h, m, s;
+        s = this.elapsedTime % 60;
+        m = Math.floor(this.elapsedTime / 60) % 60;
+        h = Math.floor(this.elapsedTime / 3600);
+        if (h) {
+            timeString = h + ':';
+        }
+        if (h || m) {
+            if (m < 10 && h > 0) {
+                timeString += m;
+            } else {
+                timeString += m;
+            }
+        }
+        if (s < 10) {
+            timeString += '0:0' + s;
+        } else {
+            timeString += '0:' + s;
+        }
+
+        this.clock = timeString;
+    }
+    public newGame() {
+        this.initialize();
+    }
     // Fisher-Yates shuffle
     public shuffle(a) {
         let j, x, i, swaps = 0;
@@ -75,156 +186,6 @@ export class PlayGameComponent implements OnInit {
         const tmp = a[i];
         a[i] = a[j];
         a[j] = tmp;
-    }
-
-    public initialize() {
-        let labelsInit = [];
-        this.labels = [];
-        this.containerWidth = 600;
-        this.tileGap = 6;
-        this.tileWidth = this.containerWidth / 4;
-        this.tileHeight = this.containerWidth / 4;
-        this.animationClass = '';
-        //this.clock.innerHTML = '';
-        //this.clock.className = '';
-        if (this.interval !== null) {
-            clearInterval(this.interval);
-        }
-        this.interval = null;
-
-        for (let i = 0; i <= 14; i++) {
-            labelsInit[i] = i + 1 + '';
-        }
-        labelsInit[15] = '';
-        let parity = this.shuffle(labelsInit);
-        this.emptycell = labelsInit.indexOf('');
-        parity += this.emptycell + Math.floor(this.emptycell / 4);
-
-        // Switch labels if necessary to guarantee that a solution exists.
-        // See https://en.wikipedia.org/wiki/15_puzzle#Solvability
-        if (parity % 2) { this.exchange(labelsInit, 0, 2); }
-
-        let k = 0;
-        for (let i = 0; i < labelsInit.length / 4; i++) {
-            for (let j = 0;j < labelsInit.length / 4; j++) {
-                this.labels[k] = new Tile(k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
-                k++;
-            }
-        }
-        //console.log(this.labels);
-
-    }
-
-
-    public swapArrayElements(a, x, y) {
-        if (a.length === 1) return a;
-        a.splice(y, 1, a.splice(x, 1, a[y])[0]);
-        return a;
-    };
-
-    public makeMove(direction) {
-        this.animationClass = direction;
-        console.log(direction);
-    }
-
-    public clickTile(event, label) {
-        const currTileIndex = this.labels.indexOf(label);
-        let labelsTemporary = [];
-        labelsTemporary = this.labels.slice();
-
-        this.animationTarget = currTileIndex;
-        /*if (currTileIndex - 1 === this.emptycell && (currTileIndex % 4) !== 0) {
-            this.makeMove('slideleft');
-        }
-        else if (currTileIndex + 1 === this.emptycell && (currTileIndex % 4) !== 3) {
-            this.makeMove('slideright');
-        }
-        else if (currTileIndex - 4 === this.emptycell) {
-            this.makeMove('slideup');
-        }
-        else if (currTileIndex + 4 === this.emptycell) {
-            this.makeMove('slidedown');
-        }
-        else {
-            return;
-        }*/
-        console.log(this.labels);
-        labelsTemporary[currTileIndex] = this.labels[this.emptycell];
-        labelsTemporary[this.emptycell] = this.labels[currTileIndex];
-        this.labels = labelsTemporary;
-        console.log(this.labels);
-        /*console.log(this.emptycell);
-        console.log(label);
-        console.log(event);*/
-
-        /*this.labels[this.emptycell] = label;
-        this.labels[currTileIndex] = '';
-        this.emptycell = currTileIndex;*/
-
-        return;
-
-    }
-
-    public doSlide(direction) {
-        this.cells[this.emptycell].className = 'cell hidden';
-        this.cells[this.index].className = 'cell slide' + direction;
-        setTimeout(this.swap, 400);
-        if (this.interval === null) {
-            this.interval = setInterval(this.showTime, 1000);
-            this.elapsedTime = 0;
-        }
-        return true;
-    }
-
-    public swap() {
-        this.cells[this.emptycell].innerHTML = this.cells[this.index].innerHTML;
-        this.cells[this.emptycell].className = 'cell';
-        this.cells[this.index].innerHTML = '';
-        this.cells[this.index].className = 'cell blank';
-        this.emptycell = this.index;
-        this.wait = this.checkWin();
-    }
-
-    public checkWin() {
-        /*for (let i = 0; i <= 14; i++) {
-         if (this.cells[i].innerHTML != i + 1) {
-         return false;
-         }
-         }
-         clearInterval(this.interval);
-         this.interval = null;
-         this.cells[this.emptycell].className = 'cell blank winner';
-         return true;*/
-    }
-
-    public showTime() {
-        this.elapsedTime++;
-        if (this.elapsedTime == 180) {
-            this.clock.className = 'slow';
-        }
-        let timeString = '';
-        let h, m, s;
-        s = this.elapsedTime % 60;
-        m = Math.floor(this.elapsedTime / 60) % 60;
-        h = Math.floor(this.elapsedTime / 3600);
-        if (h) {
-            timeString = h + ':';
-        }
-        if (h || m) {
-            if (m < 10 && h > 0) {
-                timeString += '0' + m;
-            } else {
-                timeString += m;
-            }
-        }
-        if (s < 10) {
-            timeString += ':0' + s;
-        } else {
-            timeString += ':' + s;
-        }
-
-
-        this.clock.innerHTML = timeString;
     }
 
 }

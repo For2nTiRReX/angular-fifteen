@@ -14,9 +14,9 @@
   border-radius: 12px;
   background: linear-gradient(to bottom, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
   user-select: none;
-  transition: all .8s ease;
+  transition: all .4s ease;
   &.blank {
-    background: none;
+    background: #dae8e8;
     border-style: none;
     box-shadow: none;
   }
