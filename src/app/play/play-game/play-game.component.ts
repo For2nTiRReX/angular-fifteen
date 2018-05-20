@@ -58,18 +58,23 @@ export class PlayGameComponent implements OnInit  {
         let k = 0;
         for (let i = 0; i < labelsInit.length / 4; i++) {
             for (let j = 0;j < labelsInit.length / 4; j++) {
-                this.tiles[k] = new Tile(k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
+                this.tiles[k] = new Tile(k,k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
                 k++;
             }
         }
-
+        console.log(this.tiles);
     }
 
     public swapElements(event, label) {
-        console.log(12);
-        const currTileIndex = this.tiles.indexOf(label);
-        let labelsTemporary = [];
-        labelsTemporary = this.tiles.slice();
+
+        let currTileIndex = this.tiles.indexOf(label);
+        const curr = Object.assign({}, this.tiles[currTileIndex]);
+
+        // let labelsTemporary = [];
+        // labelsTemporary = this.tiles.slice();
+        console.log(currTileIndex);
+        console.log(this.emptyTileIndex);
+        console.log(this.tiles);
 
         if (currTileIndex - 1 === this.emptyTileIndex && (currTileIndex % 4) !== 0) {
             console.log('slideleft');
@@ -94,29 +99,38 @@ export class PlayGameComponent implements OnInit  {
         else {
             return;
         }
-
         console.log(this.tiles);
+        // this.tiles[currTileIndex].isEmpty = true;
+        // this.tiles[currTileIndex].positionCurrent = this.tiles[this.emptyTileIndex].positionCurrent;
+        // this.tiles[currTileIndex].label = this.tiles[this.emptyTileIndex].label;
+        // this.tiles[this.emptyTileIndex].isEmpty = false;
+        // this.tiles[this.emptyTileIndex].positionCurrent = curr.positionCurrent;
+        // this.tiles[this.emptyTileIndex].label = curr.label;
+        //this.emptyTileIndex = curr.positionCurrent;
         // this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft + 150;
         // this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft - 150;
         // labelTemporary = this.tiles[this.emptyTileIndex];
         // this.tiles[this.emptyTileIndex] = this.tiles[currTileIndex];
         // this.tiles[currTileIndex] = labelTemporary;
-        labelsTemporary[currTileIndex] = this.tiles[this.emptyTileIndex];
-        labelsTemporary[this.emptyTileIndex] = this.tiles[currTileIndex];
-        this.tiles = labelsTemporary;
+        // labelsTemporary[currTileIndex] = this.tiles[this.emptyTileIndex];
+        // labelsTemporary[this.emptyTileIndex] = this.tiles[currTileIndex];
+        console.log(this.tiles);
+        //this.tiles = labelsTemporary;
         this.tiles.filter( function( element, index ) {
             if (element.isEmpty) {
                 this.emptyTileIndex = index;
                 return;
             }
         }, this);
+        console.log(currTileIndex);
+        console.log(this.emptyTileIndex);
         console.log(this.tiles);
 
-        if (this.interval === null) {
+        /*if (this.interval === null) {
             this.interval = setInterval(() => { this.showTime(); }, 1000);
             this.elapsedTime = 0;
-        }
-        this.checkWin();
+        }*/
+        //this.checkWin();
 
         return;
     }
@@ -165,9 +179,11 @@ export class PlayGameComponent implements OnInit  {
 
         this.clock = timeString;
     }
+
     public newGame() {
         this.initialize();
     }
+
     // Fisher-Yates shuffle
     public shuffle(a) {
         let j, x, i, swaps = 0;
