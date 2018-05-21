@@ -62,85 +62,68 @@ export class PlayGameComponent implements OnInit  {
                 k++;
             }
         }
-        console.log(this.tiles);
     }
 
     public swapElements(event, label) {
 
         let currTileIndex = this.tiles.indexOf(label);
         const curr = Object.assign({}, this.tiles[currTileIndex]);
+        const empty = Object.assign({}, this.tiles[this.emptyTileIndex]);
+        const positionCurrent = this.tiles[currTileIndex].positionCurrent;
+        const positionEmpty = this.tiles[this.emptyTileIndex].positionCurrent;
 
-        // let labelsTemporary = [];
-        // labelsTemporary = this.tiles.slice();
         console.log(currTileIndex);
         console.log(this.emptyTileIndex);
         console.log(this.tiles);
 
-        if (currTileIndex - 1 === this.emptyTileIndex && (currTileIndex % 4) !== 0) {
+        if (positionCurrent - 1 === positionEmpty && (positionCurrent % 4) !== 0) {
             console.log('slideleft');
-            this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft - this.tileWidth;
-            this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft + this.tileWidth;
+            this.tiles[currTileIndex].moveTile(-this.tileWidth,0);
+            this.tiles[this.emptyTileIndex].moveTile(this.tileWidth,0);
         }
-        else if (currTileIndex + 1 === this.emptyTileIndex && (currTileIndex % 4) !== 3) {
+        else if (positionCurrent + 1 === positionEmpty && (positionCurrent % 4) !== 3) {
             console.log('slideright');
-            this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft + this.tileWidth;
-            this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft - this.tileWidth;
+            this.tiles[currTileIndex].moveTile(this.tileWidth,0);
+            this.tiles[this.emptyTileIndex].moveTile(-this.tileWidth,0);
         }
-        else if (currTileIndex - 4 === this.emptyTileIndex) {
+        else if (positionCurrent - 4 === positionEmpty) {
             console.log('slideup');
-            this.tiles[currTileIndex].positionTop = this.tiles[currTileIndex].positionTop - this.tileWidth;
-            this.tiles[this.emptyTileIndex].positionTop = this.tiles[this.emptyTileIndex].positionTop + this.tileWidth;
+            this.tiles[currTileIndex].moveTile(0,-this.tileHeight);
+            this.tiles[this.emptyTileIndex].moveTile(0,this.tileHeight);
         }
-        else if (currTileIndex + 4 === this.emptyTileIndex) {
+        else if (positionCurrent + 4 === positionEmpty) {
             console.log('slidedown');
-            this.tiles[currTileIndex].positionTop = this.tiles[currTileIndex].positionTop + this.tileWidth;
-            this.tiles[this.emptyTileIndex].positionTop = this.tiles[this.emptyTileIndex].positionTop - this.tileWidth;
+            this.tiles[currTileIndex].moveTile(0,this.tileHeight);
+            this.tiles[this.emptyTileIndex].moveTile(0,-this.tileHeight);
         }
         else {
             return;
         }
-        console.log(this.tiles);
-        // this.tiles[currTileIndex].isEmpty = true;
-        // this.tiles[currTileIndex].positionCurrent = this.tiles[this.emptyTileIndex].positionCurrent;
-        // this.tiles[currTileIndex].label = this.tiles[this.emptyTileIndex].label;
-        // this.tiles[this.emptyTileIndex].isEmpty = false;
-        // this.tiles[this.emptyTileIndex].positionCurrent = curr.positionCurrent;
-        // this.tiles[this.emptyTileIndex].label = curr.label;
-        //this.emptyTileIndex = curr.positionCurrent;
-        // this.tiles[currTileIndex].positionLeft = this.tiles[currTileIndex].positionLeft + 150;
-        // this.tiles[this.emptyTileIndex].positionLeft = this.tiles[this.emptyTileIndex].positionLeft - 150;
-        // labelTemporary = this.tiles[this.emptyTileIndex];
-        // this.tiles[this.emptyTileIndex] = this.tiles[currTileIndex];
-        // this.tiles[currTileIndex] = labelTemporary;
-        // labelsTemporary[currTileIndex] = this.tiles[this.emptyTileIndex];
-        // labelsTemporary[this.emptyTileIndex] = this.tiles[currTileIndex];
-        console.log(this.tiles);
-        //this.tiles = labelsTemporary;
+
+        this.tiles[currTileIndex].positionCurrent = empty.positionCurrent;
+        this.tiles[this.emptyTileIndex].positionCurrent = curr.positionCurrent;
+
         this.tiles.filter( function( element, index ) {
             if (element.isEmpty) {
                 this.emptyTileIndex = index;
                 return;
             }
         }, this);
-        console.log(currTileIndex);
-        console.log(this.emptyTileIndex);
         console.log(this.tiles);
 
         /*if (this.interval === null) {
             this.interval = setInterval(() => { this.showTime(); }, 1000);
             this.elapsedTime = 0;
         }*/
-        //this.checkWin();
+        this.checkWin();
 
         return;
     }
 
 
-
-
     public checkWin() {
          for (let i = 0; i <= 14; i++) {
-             if (+this.tiles[i].label != i + 1) {
+             if (+this.tiles[i].label != this.tiles[i].positionCurrent + 1) {
                 return false;
              }
          }
@@ -179,7 +162,6 @@ export class PlayGameComponent implements OnInit  {
 
         this.clock = timeString;
     }
-
     public newGame() {
         this.initialize();
     }

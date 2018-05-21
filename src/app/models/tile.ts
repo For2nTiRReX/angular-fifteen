@@ -7,4 +7,13 @@ export class Tile {
         public positionLeft: number,
         public isEmpty: boolean
     ) {}
+
+    moveTile(x,y) {
+        this.positionLeft = this.positionLeft + x;
+        this.positionTop = this.positionTop + y;
+    }
+
+    isRightPosition() {
+        return this.positionCurrent + 1 === +this.label;
+    }
 }

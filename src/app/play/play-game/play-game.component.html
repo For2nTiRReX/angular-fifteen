@@ -3,7 +3,8 @@
     <div *ngFor="let item of tiles"
          [ngClass]="{
             'tile cell': true,
-            'blank': item.isEmpty === true
+            'blank': item.isEmpty === true,
+            'right-position': item.isRightPosition()
           }"
          [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px' }"
          (click)="swapElements($event,item);">

@@ -8,11 +8,12 @@
   position: absolute;
   line-height: 74px;
   height: 74px;
+  color: #051d38;
+  border: 1px solid #051d38;
   text-align: center;
-  font-size: 48px;
-  border-style: solid;
-  border-radius: 12px;
-  background: linear-gradient(to bottom, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
+  font-size: 30px;
+  border-radius: 8px;
+  background: #e4e2da;
   user-select: none;
   transition: all .4s ease;
   &.blank {
@@ -20,24 +21,12 @@
     border-style: none;
     box-shadow: none;
   }
+  &.right-position {
+    border-color: #9ed089;
+    background: #dff0d8;
+  }
   &.hidden {
     visibility: hidden;
-  }
-  &.slideright {
-    animation-name: slideright;
-    animation-duration: 0.5s;
-  }
-  &.slideleft {
-    animation-name: slideleft;
-    animation-duration: 0.5s;
-  }
-  &.slideup {
-    animation-name: slideup;
-    animation-duration: 0.5s;
-  }
-  &.slidedown {
-    animation-name: slidedown;
-    animation-duration: 0.5s;
   }
   &.winner {
     background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emoji_Grinning_Face_Smiling_Eyes.svg/128px-Emoji_Grinning_Face_Smiling_Eyes.svg.png);
