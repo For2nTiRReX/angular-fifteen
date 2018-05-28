@@ -1,4 +1,4 @@
-<span id="clock" class="{{clockStateClass}}">{{clock}}</span>
+<fifteen-time-counter></fifteen-time-counter>
 <div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
     <div *ngFor="let item of tiles"
          [ngClass]="{
@@ -11,5 +11,5 @@
         {{item.label}}
     </div>
 </div>
-<button class="button" id="pause">Pause</button>
+<button class="button" id="pause" (click)="toggleActiveGame();">{{isGameActive ? 'Pause' : 'Resume'}}</button>
 <button class="button" id="new_game" (click)="newGame();">New Game</button>

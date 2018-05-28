@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
+import { TimeCounterComponent } from '../time-counter/time-counter.component';
 import { Tile } from '../../models/index';
 
 @Component({
@@ -11,19 +12,17 @@ import { Tile } from '../../models/index';
 export class PlayGameComponent implements OnInit  {
 
     tiles: Array<Tile>;
-    interval: any;
-
-    clock: string;
-    clockStateClass: string;
-
-    elapsedTime: number;
     emptyTileIndex: number;
     tileWidth: number;
     tileHeight: number;
     tileGap: number;
     containerWidth: number;
+    movesCounter: number = 0;
+    isGameActive: boolean;
+    @ViewChild( TimeCounterComponent ) timerComponent: TimeCounterComponent;
 
-    constructor() { }
+
+    constructor() {}
 
     ngOnInit() {
         this.tiles = [];
@@ -31,37 +30,11 @@ export class PlayGameComponent implements OnInit  {
         this.tileGap = 6;
         this.tileWidth = this.containerWidth / 4;
         this.tileHeight = this.containerWidth / 4;
-        this.initialize();
+        this.newGame();
     }
 
     public initialize() {
-        let labelsInit = [];
-        this.elapsedTime = 0;
-        this.clock = '0:00';
-        if (this.interval !== null) {
-            clearInterval(this.interval);
-        }
-        this.interval = null;
 
-        for (let i = 0; i <= 14; i++) {
-            labelsInit[i] = i + 1 + '';
-        }
-        labelsInit[15] = '';
-        let parity = this.shuffle(labelsInit);
-        this.emptyTileIndex = labelsInit.indexOf('');
-        parity += this.emptyTileIndex + Math.floor(this.emptyTileIndex / 4);
-
-        // Switch labels if necessary to guarantee that a solution exists.
-        // See https://en.wikipedia.org/wiki/15_puzzle#Solvability
-        if (parity % 2) { this.exchange(labelsInit, 0, 2); }
-
-        let k = 0;
-        for (let i = 0; i < labelsInit.length / 4; i++) {
-            for (let j = 0;j < labelsInit.length / 4; j++) {
-                this.tiles[k] = new Tile(k,k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
-                k++;
-            }
-        }
     }
 
     public swapElements(event, label) {
@@ -71,10 +44,6 @@ export class PlayGameComponent implements OnInit  {
         const empty = Object.assign({}, this.tiles[this.emptyTileIndex]);
         const positionCurrent = this.tiles[currTileIndex].positionCurrent;
         const positionEmpty = this.tiles[this.emptyTileIndex].positionCurrent;
-
-        console.log(currTileIndex);
-        console.log(this.emptyTileIndex);
-        console.log(this.tiles);
 
         if (positionCurrent - 1 === positionEmpty && (positionCurrent % 4) !== 0) {
             console.log('slideleft');
@@ -100,6 +69,7 @@ export class PlayGameComponent implements OnInit  {
             return;
         }
 
+
         this.tiles[currTileIndex].positionCurrent = empty.positionCurrent;
         this.tiles[this.emptyTileIndex].positionCurrent = curr.positionCurrent;
 
@@ -109,14 +79,10 @@ export class PlayGameComponent implements OnInit  {
                 return;
             }
         }, this);
+        this.movesCounter++;
         console.log(this.tiles);
-
-        /*if (this.interval === null) {
-            this.interval = setInterval(() => { this.showTime(); }, 1000);
-            this.elapsedTime = 0;
-        }*/
+        console.log(this.movesCounter);
         this.checkWin();
-
         return;
     }
 
@@ -127,43 +93,44 @@ export class PlayGameComponent implements OnInit  {
                 return false;
              }
          }
+         console.log(this.timerComponent.getTime());
+         console.log(this.movesCounter);
          console.log('You win!');
-         clearInterval(this.interval);
-         this.interval = null;
          return true;
     }
 
-    public showTime() {
+    toggleActiveGame(): boolean {
+        this.isGameActive = !this.isGameActive;
+        this.timerComponent.toggleState(this.isGameActive);
+        return this.isGameActive;
+    }
 
-        this.elapsedTime++;
-        if (this.elapsedTime == 180) {
-            this.clockStateClass = 'slow';
+    public newGame() {
+
+        let labelsInit = [];
+        for (let i = 0; i <= 14; i++) {
+            labelsInit[i] = i + 1 + '';
         }
-        let timeString = '';
-        let h, m, s;
-        s = this.elapsedTime % 60;
-        m = Math.floor(this.elapsedTime / 60) % 60;
-        h = Math.floor(this.elapsedTime / 3600);
-        if (h) {
-            timeString = h + ':';
-        }
-        if (h || m) {
-            if (m < 10 && h > 0) {
-                timeString += m;
-            } else {
-                timeString += m;
+        labelsInit[15] = '';
+        let parity = this.shuffle(labelsInit);
+        this.emptyTileIndex = labelsInit.indexOf('');
+        parity += this.emptyTileIndex + Math.floor(this.emptyTileIndex / 4);
+
+        // Switch labels if necessary to guarantee that a solution exists.
+        // See https://en.wikipedia.org/wiki/15_puzzle#Solvability
+        if (parity % 2) { this.exchange(labelsInit, 0, 2); }
+
+        let k = 0;
+        for (let i = 0; i < labelsInit.length / 4; i++) {
+            for (let j = 0;j < labelsInit.length / 4; j++) {
+                this.tiles[k] = new Tile(k,k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
+                k++;
             }
         }
-        if (s < 10) {
-            timeString += '0:0' + s;
-        } else {
-            timeString += '0:' + s;
-        }
 
-        this.clock = timeString;
-    }
-    public newGame() {
-        this.initialize();
+        this.timerComponent.reset();
+        this.isGameActive = true;
+        this.timerComponent.start();
     }
 
     // Fisher-Yates shuffle

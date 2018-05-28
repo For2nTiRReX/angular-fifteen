@@ -6,5 +6,5 @@ export class Points {
         moves: number,
         time: number,
         player?: Player,
-    ){}
+    ) {}
 }
