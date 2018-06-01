@@ -17,14 +17,26 @@ export class PlayerServiceService {
 
   public loginUser( userLogin: string ) {
 
+    this.db.allDocs({include_docs: true, descending: true}, function(err, doc) {
+
+      console.log(doc.rows);
+    });
+
+
+    console.log(this.player);
+    // var todo = {
+    //   _id: new Date().toISOString(),
+    //   title: 'Fake',
+    //   completed: false
+    // };
+
+  }
+
+  public createNewUser( userLogin: string ) {
+
     let uuid = UUID.UUID();
     this.player = new Player( uuid, userLogin );
-    var todo = {
-      _id: new Date().toISOString(),
-      title: 'Fake',
-      completed: false
-    };
-    this.db.put(todo, function callback(err, result) {
+    this.db.put(this.player, function callback(err, result) {
       if (!err) {
         console.log('Successfully posted a todo!',result);
       }
@@ -33,5 +45,4 @@ export class PlayerServiceService {
       }
     });
   }
-
 }
