@@ -7,42 +7,49 @@ const PouchDB = $PouchDB['default'];
 @Injectable()
 export class PlayerServiceService {
 
-  public player: Player;
-  private db: any;
+    public player: Player;
+    private db: any;
 
-  constructor() {
-    this.db = new PouchDB('fifteen_db');
-    console.log(this.db);
-  }
+    constructor() {
+        this.db = new PouchDB('fifteen_db');
+        console.log(this.db);
+    }
 
-  public loginUser( userLogin: string ) {
+    public loginUser( userLogin: string ) {
 
-    this.db.allDocs({include_docs: true, descending: true}, function(err, doc) {
+        const that = this;
+        const userPromise = this.db.allDocs({
+            include_docs: true,
+            descending: true
+        }).then(function (result) {
+            if ( result.rows.length < 1 || !that.isUserExist( result.rows, userLogin ) ) {
+                console.log(that.createNewUser( userLogin ));
+            } else {
+                console.log(result.rows);
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
 
-      console.log(doc.rows);
-    });
+        console.log(userPromise);
+        return userPromise;
+    }
 
+    public createNewUser( userLogin: string ) {
 
-    console.log(this.player);
-    // var todo = {
-    //   _id: new Date().toISOString(),
-    //   title: 'Fake',
-    //   completed: false
-    // };
+        let uuid = UUID.UUID();
+        this.player = new Player( uuid, userLogin );
+        return this.db.put( this.player).then(function (result) {
+            console.log('Successfully posted !',result);
+            return result;
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
 
-  }
-
-  public createNewUser( userLogin: string ) {
-
-    let uuid = UUID.UUID();
-    this.player = new Player( uuid, userLogin );
-    this.db.put(this.player, function callback(err, result) {
-      if (!err) {
-        console.log('Successfully posted a todo!',result);
-      }
-      else {
-        console.log('Error!',result);
-      }
-    });
-  }
+    private isUserExist( dbRows, userLogin ) {
+        return dbRows.some(function(row) {
+            return userLogin === row.doc.name;
+        });
+    }
 }
