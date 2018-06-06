@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
-import { PlayerServiceService } from "../services/player-service.service";
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PlayerServiceService } from '../services/player-service.service';
+import { Player } from '../models';
 
 @Component({
   selector: 'fifteen-login',
@@ -10,33 +11,33 @@ import { PlayerServiceService } from "../services/player-service.service";
 })
 export class LoginComponent implements OnInit {
 
+  private formErrorMessageBox: string;
+  private messageBoxVisibility: boolean;
   private loginForm: FormGroup;
 
   private formErrors: Object = {
-    "userLogin": "",
+    'userLogin': '',
   };
 
   private validationMessages: Object = {
-    "userLogin": {
-      "required": "Поле обязательно для заполнения.",
-      "minlength": "Введите не мение 4 символов.",
-      "maxlength": "Введите мение 16 символов."
+    'userLogin': {
+      'required': 'Поле обязательно для заполнения.',
+      'minlength': 'Введите не мение 4 символов.',
+      'maxlength': 'Введите мение 16 символов.'
     }
   };
 
-
-  private formErrorMessageBox: string;
-  private messageBoxVisibility: boolean = false;
-
-  constructor(public PlayerServiceService: PlayerServiceService, public router: Router, private fb: FormBuilder) { }
+  constructor(public playerServiceService: PlayerServiceService, public router: Router, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.router.navigate(['/game']);
+    this.messageBoxVisibility = false;
     this.buildForm();
   }
 
   buildForm() {
     this.loginForm = this.fb.group({
-      "userLogin": ["", [
+      'userLogin': ['', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16)
@@ -48,21 +49,21 @@ export class LoginComponent implements OnInit {
   }
 
   onValueChange(data?: any) {
-    if (!this.loginForm) return;
+    if (!this.loginForm) { return; }
 
     this.messageBoxVisibility = false;
-    let form = this.loginForm;
+    const form = this.loginForm;
 
     for (let field in this.formErrors) {
 
-      this.formErrors[field] = "";
+      this.formErrors[field] = '';
       let control = form.get(field);
 
       if (control && control.dirty && !control.valid) {
         let message = this.validationMessages[field];
 
         for (let key in control.errors) {
-          this.formErrors[field] += message[key] + " ";
+          this.formErrors[field] += message[key] + ' ';
         }
       }
     }
@@ -70,26 +71,19 @@ export class LoginComponent implements OnInit {
 
   private login() {
 
-    if(!this.loginForm.valid) {
+    if ( !this.loginForm.valid ) {
       this.messageBoxVisibility = true;
-      this.formErrorMessageBox = "Форма не валидна попробуйте исправить ошибки полей ввода!";
+      this.formErrorMessageBox = 'Форма не валидна попробуйте исправить ошибки полей ввода!';
       return;
     }
 
-    this.PlayerServiceService
-        .loginUser( this.loginForm.get('userLogin').value );
-        // .then((data) => {
-        //   console.log(data);
-        //   if (data) {
-        //     this.router.navigate(['/game']);
-        //     return true;
-        //   }
-        //   else {
-        //     this.messageBoxVisibility = true;
-        //     this.formErrorMessageBox = "Пользователь с таким именем уже существует!";
-        //     return false;
-        //   }
-        // });
+    this.playerServiceService
+        .loginUser( this.loginForm.get('userLogin').value )
+        .then( player => {
+          if ( player instanceof Player) {
+              this.router.navigate(['/']);
+          }
+        });
   }
 
 }

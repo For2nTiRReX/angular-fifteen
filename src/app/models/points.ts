@@ -5,6 +5,7 @@ export class Points {
         id: string,
         moves: number,
         time: number,
+        player_id: string,
         player?: Player,
     ) {}
 }

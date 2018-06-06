@@ -11,6 +11,8 @@ import { TopPlayersComponent } from './top-players/top-players.component';
 import { TimeCounterComponent } from './play/time-counter/time-counter.component';
 
 import { PlayerServiceService } from './services/player-service.service'
+import {PlayerAuthGuardService} from './services/player-auth-guard.service';
+import {PointsServiceService} from './services/points-service.service';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { PlayerServiceService } from './services/player-service.service'
     ReactiveFormsModule
   ],
   providers: [
-    PlayerServiceService
+    PlayerServiceService,
+    PlayerAuthGuardService,
+    PointsServiceService
   ],
   bootstrap: [AppComponent]
 })
