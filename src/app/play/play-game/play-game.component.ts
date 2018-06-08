@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { TimeCounterComponent } from '../time-counter/time-counter.component';
 import { Tile } from '../../models/index';
+import {PointsServiceService} from '../../services/points-service.service';
 
 @Component({
     selector: 'fifteen-play-game',
@@ -22,7 +23,7 @@ export class PlayGameComponent implements OnInit  {
     @ViewChild( TimeCounterComponent ) timerComponent: TimeCounterComponent;
 
 
-    constructor() {}
+    constructor( private pointsServiceService: PointsServiceService ) {}
 
     ngOnInit() {
         this.tiles = [];
@@ -31,10 +32,7 @@ export class PlayGameComponent implements OnInit  {
         this.tileWidth = this.containerWidth / 4;
         this.tileHeight = this.containerWidth / 4;
         this.newGame();
-    }
-
-    public initialize() {
-
+        this.pointsServiceService.setNewResult(1, 1);
     }
 
     public swapElements(event, label) {

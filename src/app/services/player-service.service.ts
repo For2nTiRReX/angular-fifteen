@@ -19,19 +19,17 @@ export class PlayerServiceService {
     }
 
     public loginUser( userLogin: string ): Promise<Player> {
-        const that = this;
         const userPromise = this.db.allDocs({
-            include_docs: true,
-            descending: true
-        }).then(function (result) {
-            if ( result.rows.length < 1 || !that.isUserExist( result.rows, userLogin ) ) {
-                that.createNewUser( userLogin ).then((createdUser) => {
-                    return that.getUserFromDb( createdUser.id );
+            include_docs: true
+        }).then( (result) => {
+            if ( result.rows.length < 1 || !this.isUserExist( result.rows, userLogin ) ) {
+                return this.createNewUser( userLogin ).then((createdUser) => {
+                    return this.getUserFromDb( createdUser.id );
                 });
             } else {
-                return that.getUserFromDb( result.rows.find(item => item.doc.name === userLogin ).id );
+                return this.getUserFromDb( result.rows.find(item => item.doc.name === userLogin ).id );
             }
-        }).catch(function (err) {
+        }).catch( (err) => {
             console.log(err);
         });
         return userPromise;
@@ -49,16 +47,14 @@ export class PlayerServiceService {
     }
 
     private getUserFromDb( userId: string ): Promise<Player> {
-        const that = this;
         return this.db.allDocs({
             include_docs: true,
-            attachments: true,
             startkey: userId,
             endkey: userId
-        }).then(function (result) {
-            that.player = new Player( result.rows[0].doc._id, result.rows[0].doc.name );
-            localStorage.setItem('player', JSON.stringify(that.player));
-            return that.player;
+        }).then( (result) => {
+            this.player = new Player( result.rows[0].doc._id, result.rows[0].doc.name );
+            localStorage.setItem('player', JSON.stringify(this.player));
+            return this.player;
         }).catch(function (err) {
             console.log(err);
         });

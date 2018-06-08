@@ -11,9 +11,7 @@
         "assets",
         "favicon.ico"
       ],
-      "scripts": [
-        "../node_modules/pouchdb/dist/pouchdb.js"
-      ],
+      "scripts": [],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",

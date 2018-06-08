@@ -7,7 +7,7 @@ import { Player } from '../models/player';
 export class PlayerAuthGuardService implements CanActivate {
 
   constructor( public playerServiceService: PlayerServiceService, private router: Router) {}
-  canActivate(): boolean {
+  canActivate() {
     if (this.playerServiceService.getPlayer() instanceof Player) {
         return true;
     } else {

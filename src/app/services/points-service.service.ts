@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Points, Player } from '../models';
 import { UUID } from 'angular2-uuid';
 import * as $PouchDB from 'pouchdb';
@@ -6,47 +6,46 @@ import { PlayerServiceService } from './player-service.service';
 const PouchDB = $PouchDB['default'];
 
 @Injectable()
-export class PointsServiceService implements OnInit {
+export class PointsServiceService {
 
   private db: any;
   private points: Points;
   private player: Player;
 
-  constructor(public playerServiceService: PlayerServiceService) {}
-
-  ngOnInit() {
+  constructor(public playerServiceService: PlayerServiceService) {
       this.db = new PouchDB('fifteen_db_points');
+      this.player = this.playerServiceService.getPlayer();
+      this.points = new Points( '', 0, 0, this.player._id, this.player );
   }
 
   public getTopTen() {
       const pointsPromise = this.db.allDocs({
           include_docs: true,
           descending: true
-      }).then(function (result) {
+      }).then( (result) => {
           if ( result.rows.length > 0 ) {
           } else {
               return [];
           }
-      }).catch(function (err) {
+      }).catch( (err) => {
           console.log(err);
       });
       return pointsPromise;
   }
 
   public setNewResult( moves: number, time: number ) {
-
-      this.player = this.playerServiceService.getPlayer();
+      let haveToBeUpdated = false;
+      this.points.moves = moves;
+      this.points.time  = time;
       const pointsPromise = this.db.allDocs({
           include_docs: true,
           descending: true,
       }).then( (result) => {
-          if (result.rows.length > 0) {
-              if ( result.rows[0].doc.moves > moves || result.rows[0].doc.time > time ) {
-
-              }
+          haveToBeUpdated = this.isPointsHaveToBeUpdated( result.rows, moves, time );
+          if (result.rows.length > 0 && haveToBeUpdated) {
+              this.updatePlayerResults(this.points, haveToBeUpdated);
           } else {
-              console.log('No user in db!');
-              return this.updatePlayerResults();
+              this.updatePlayerResults(this.points);
           }
       }).catch((err) => {
           console.log(err);
@@ -54,24 +53,27 @@ export class PointsServiceService implements OnInit {
       return pointsPromise;
   }
 
-  private updatePlayerResults( uuid: string = '') {
+  private updatePlayerResults( points: Points, uuid: string = '' ) {
       if ( uuid === '' ) {
           uuid = UUID.UUID();
+          points._id = uuid;
       }
-      this.points = new Points( uuid, 0, 0, player._id, player );
-      this.points.moves = moves;
-      this.points.time  = time;
-      return this.db.put( this.points ).then(function (result) {
+      return this.db.put( points ).then( (result) => {
           console.log( 'Successfully posted !', result );
           return result;
-      }).catch(function (err) {
+      }).catch( (err) => {
           console.log(err);
       });
   }
 
-  private isPointExist( dbRows, user_id ) {
-      return dbRows.some(function(row) {
-          return user_id === row.doc.player_id;
+  private isPointsHaveToBeUpdated( dbRows, moves, time ) {
+      return dbRows.find( (row) => {
+          if ( row.doc.player_id === this.player._id && (moves < row.doc.moves || time < row.doc.time) ) {
+              this.points._id = row.doc._id;
+              return row.doc._id;
+          } else {
+              return false;
+          }
       });
   }
 }
