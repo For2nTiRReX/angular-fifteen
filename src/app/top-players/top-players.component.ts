@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PointsServiceService} from '../services/points-service.service';
 
 @Component({
   selector: 'fifteen-top-players',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopPlayersComponent implements OnInit {
 
-  constructor() { }
+  constructor(public pointsServiceService: PointsServiceService) { }
 
   ngOnInit() {
+    console.log(this.pointsServiceService.getTopPlayers(10));
   }
 
 }

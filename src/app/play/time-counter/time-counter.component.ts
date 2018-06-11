@@ -63,6 +63,10 @@ export class TimeCounterComponent implements OnInit {
     return this.time;
   }
 
+  public getTimeSeconds(): number {
+      return this.seconds;
+  }
+
   public toggleState($event) {
     if ($event) {
       this.start();

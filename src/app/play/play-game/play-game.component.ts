@@ -18,7 +18,7 @@ export class PlayGameComponent implements OnInit  {
     tileHeight: number;
     tileGap: number;
     containerWidth: number;
-    movesCounter: number = 0;
+    movesCounter: number;
     isGameActive: boolean;
     @ViewChild( TimeCounterComponent ) timerComponent: TimeCounterComponent;
 
@@ -26,13 +26,13 @@ export class PlayGameComponent implements OnInit  {
     constructor( private pointsServiceService: PointsServiceService ) {}
 
     ngOnInit() {
+        this.movesCounter = 0;
         this.tiles = [];
         this.containerWidth = 300;
         this.tileGap = 6;
         this.tileWidth = this.containerWidth / 4;
         this.tileHeight = this.containerWidth / 4;
         this.newGame();
-        this.pointsServiceService.setNewResult(1, 1);
     }
 
     public swapElements(event, label) {
@@ -44,26 +44,23 @@ export class PlayGameComponent implements OnInit  {
         const positionEmpty = this.tiles[this.emptyTileIndex].positionCurrent;
 
         if (positionCurrent - 1 === positionEmpty && (positionCurrent % 4) !== 0) {
-            console.log('slideleft');
+            // console.log('slideleft');
             this.tiles[currTileIndex].moveTile(-this.tileWidth,0);
             this.tiles[this.emptyTileIndex].moveTile(this.tileWidth,0);
-        }
-        else if (positionCurrent + 1 === positionEmpty && (positionCurrent % 4) !== 3) {
-            console.log('slideright');
+        } else if (positionCurrent + 1 === positionEmpty && (positionCurrent % 4) !== 3) {
+            // console.log('slideright');
             this.tiles[currTileIndex].moveTile(this.tileWidth,0);
             this.tiles[this.emptyTileIndex].moveTile(-this.tileWidth,0);
-        }
-        else if (positionCurrent - 4 === positionEmpty) {
-            console.log('slideup');
+        } else if (positionCurrent - 4 === positionEmpty) {
+            // console.log('slideup');
             this.tiles[currTileIndex].moveTile(0,-this.tileHeight);
             this.tiles[this.emptyTileIndex].moveTile(0,this.tileHeight);
-        }
-        else if (positionCurrent + 4 === positionEmpty) {
-            console.log('slidedown');
+        } else if (positionCurrent + 4 === positionEmpty) {
+            // console.log('slidedown');
             this.tiles[currTileIndex].moveTile(0,this.tileHeight);
             this.tiles[this.emptyTileIndex].moveTile(0,-this.tileHeight);
-        }
-        else {
+        } else {
+            // console.log('You ca\'nt do this move');
             return;
         }
 
@@ -78,8 +75,6 @@ export class PlayGameComponent implements OnInit  {
             }
         }, this);
         this.movesCounter++;
-        console.log(this.tiles);
-        console.log(this.movesCounter);
         this.checkWin();
         return;
     }
@@ -91,9 +86,8 @@ export class PlayGameComponent implements OnInit  {
                 return false;
              }
          }
-         console.log(this.timerComponent.getTime());
-         console.log(this.movesCounter);
          console.log('You win!');
+         this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
          return true;
     }
 
@@ -125,7 +119,7 @@ export class PlayGameComponent implements OnInit  {
                 k++;
             }
         }
-
+        this.movesCounter = 0;
         this.timerComponent.reset();
         this.isGameActive = true;
         this.timerComponent.start();

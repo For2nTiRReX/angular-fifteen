@@ -15,49 +15,49 @@ export class PointsServiceService {
   constructor(public playerServiceService: PlayerServiceService) {
       this.db = new PouchDB('fifteen_db_points');
       this.player = this.playerServiceService.getPlayer();
-      this.points = new Points( '', 0, 0, this.player._id, this.player );
   }
 
-  public getTopTen() {
-      const pointsPromise = this.db.allDocs({
+  public getTopPlayers( amount: number ) {
+      return this.db.allDocs({
           include_docs: true,
           descending: true
       }).then( (result) => {
           if ( result.rows.length > 0 ) {
+              return result.rows
+                  .sort( (a, b) => {
+                    return a.doc.moves - b.doc.moves;
+                  })
+                  .slice( 0, amount )
+                  .map((dbItem) => {
+                      const itemProps = dbItem.doc;
+                      return new Points(itemProps._id, itemProps.moves, itemProps.time, itemProps.player_id, itemProps.player);
+                  });
           } else {
               return [];
           }
       }).catch( (err) => {
           console.log(err);
       });
-      return pointsPromise;
   }
 
   public setNewResult( moves: number, time: number ) {
-      let haveToBeUpdated = false;
-      this.points.moves = moves;
-      this.points.time  = time;
-      const pointsPromise = this.db.allDocs({
+      let haveToBeUpdated = '';
+      return this.db.allDocs({
           include_docs: true,
           descending: true,
       }).then( (result) => {
           haveToBeUpdated = this.isPointsHaveToBeUpdated( result.rows, moves, time );
-          if (result.rows.length > 0 && haveToBeUpdated) {
-              this.updatePlayerResults(this.points, haveToBeUpdated);
-          } else {
-              this.updatePlayerResults(this.points);
+          console.log(haveToBeUpdated);
+          if ( haveToBeUpdated ) {
+              this.points = new Points( haveToBeUpdated, moves, time, this.player._id, this.player );
+              this.updatePlayerResults( this.points, haveToBeUpdated );
           }
       }).catch((err) => {
           console.log(err);
       });
-      return pointsPromise;
   }
 
   private updatePlayerResults( points: Points, uuid: string = '' ) {
-      if ( uuid === '' ) {
-          uuid = UUID.UUID();
-          points._id = uuid;
-      }
       return this.db.put( points ).then( (result) => {
           console.log( 'Successfully posted !', result );
           return result;
@@ -66,14 +66,31 @@ export class PointsServiceService {
       });
   }
 
-  private isPointsHaveToBeUpdated( dbRows, moves, time ) {
-      return dbRows.find( (row) => {
-          if ( row.doc.player_id === this.player._id && (moves < row.doc.moves || time < row.doc.time) ) {
-              this.points._id = row.doc._id;
-              return row.doc._id;
-          } else {
-              return false;
+
+  private isPointsHaveToBeUpdated( dbRows, moves, time ): string {
+      for ( let i = 0; i < dbRows.length; i++) {
+          const row = dbRows[i].doc;
+          if ( row.player_id === this.player._id ) {
+              if ( moves < row.moves || time < row.time )  {
+                  this.db.remove(row);
+                  return row._id;
+              } else {
+                  return '';
+              }
           }
+      }
+      return UUID.UUID();
+  }
+
+  private createTestDb() {
+      const pointsArr = [];
+      for ( let i = 0; i < 15; i++ ) {
+          pointsArr.push( new Points( UUID.UUID(), i, i + 25, UUID.UUID() ) );
+      }
+      this.db.bulkDocs( pointsArr ).then( (result) => {
+          console.log( 'Successfully posted !', result );
+      }).catch( (err) => {
+          console.log(err);
       });
   }
 }

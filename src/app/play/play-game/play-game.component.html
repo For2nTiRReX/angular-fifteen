@@ -1,4 +1,7 @@
 <fifteen-time-counter></fifteen-time-counter>
+<div class="moves-counter">
+    {{movesCounter}}
+</div>
 <div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
     <div *ngFor="let item of tiles"
          [ngClass]="{
