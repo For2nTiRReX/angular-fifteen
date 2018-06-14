@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import { ModalService } from './services/modal.service';
+import {FinishGameComponent} from './popup-components/finish-game/finish-game.component';
 
 
 
@@ -9,10 +11,12 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  title = 'fifteen';
-
+  constructor(private modalService: ModalService) {}
   ngOnInit () {
   }
 
+  private removeModal() {
+      this.modalService.destroy();
+  }
 
 }

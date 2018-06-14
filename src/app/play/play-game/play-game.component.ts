@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild  } from '@angular/core';
+import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { TimeCounterComponent } from '../time-counter/time-counter.component';
 import { Tile } from '../../models/index';
-import {PointsServiceService} from '../../services/points-service.service';
+import { PointsServiceService } from '../../services/points-service.service';
+import { ModalService } from '../../services/modal.service';
+import { FinishGameComponent } from '../../popup-components/finish-game/finish-game.component';
 
 @Component({
     selector: 'fifteen-play-game',
@@ -10,7 +12,7 @@ import {PointsServiceService} from '../../services/points-service.service';
 })
 
 
-export class PlayGameComponent implements OnInit  {
+export class PlayGameComponent implements OnInit {
 
     tiles: Array<Tile>;
     emptyTileIndex: number;
@@ -23,7 +25,7 @@ export class PlayGameComponent implements OnInit  {
     @ViewChild( TimeCounterComponent ) timerComponent: TimeCounterComponent;
 
 
-    constructor( private pointsServiceService: PointsServiceService ) {}
+    constructor( private pointsServiceService: PointsServiceService, private modalService: ModalService) {}
 
     ngOnInit() {
         this.movesCounter = 0;
@@ -33,6 +35,7 @@ export class PlayGameComponent implements OnInit  {
         this.tileWidth = this.containerWidth / 4;
         this.tileHeight = this.containerWidth / 4;
         this.newGame();
+
     }
 
     public swapElements(event, label) {
@@ -75,6 +78,7 @@ export class PlayGameComponent implements OnInit  {
             }
         }, this);
         this.movesCounter++;
+
         this.checkWin();
         return;
     }
@@ -87,6 +91,7 @@ export class PlayGameComponent implements OnInit  {
              }
          }
          console.log('You win!');
+            this.modalService.init( FinishGameComponent, {}, {} );
          this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
          return true;
     }
