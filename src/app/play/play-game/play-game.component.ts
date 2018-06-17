@@ -78,7 +78,7 @@ export class PlayGameComponent implements OnInit {
             }
         }, this);
         this.movesCounter++;
-
+        this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
         this.checkWin();
         return;
     }
@@ -91,8 +91,8 @@ export class PlayGameComponent implements OnInit {
              }
          }
          console.log('You win!');
-            this.modalService.init( FinishGameComponent, {}, {} );
-         this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
+         this.modalService.init( FinishGameComponent, {}, {} );
+
          return true;
     }
 

@@ -14,7 +14,7 @@ export class PointsServiceService {
 
   constructor(public playerServiceService: PlayerServiceService) {
       this.db = new PouchDB('fifteen_db_points');
-      this.player = this.playerServiceService.getPlayer();
+      this.playerServiceService.getPlayer().subscribe( player => this.player = player );
   }
 
   public getTopPlayers( amount: number ) {
@@ -47,7 +47,6 @@ export class PointsServiceService {
           descending: true,
       }).then( (result) => {
           haveToBeUpdated = this.isPointsHaveToBeUpdated( result.rows, moves, time );
-          console.log(haveToBeUpdated);
           if ( haveToBeUpdated ) {
               this.points = new Points( haveToBeUpdated, moves, time, this.player._id, this.player );
               this.updatePlayerResults( this.points, haveToBeUpdated );
@@ -82,7 +81,7 @@ export class PointsServiceService {
       return UUID.UUID();
   }
 
-  private createTestDb() {
+  public createTestDb() {
       const pointsArr = [];
       for ( let i = 0; i < 15; i++ ) {
           pointsArr.push( new Points( UUID.UUID(), i, i + 25, UUID.UUID() ) );

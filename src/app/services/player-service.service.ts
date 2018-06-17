@@ -2,20 +2,27 @@ import { Injectable } from '@angular/core';
 import { Player } from '../models/player';
 import { UUID } from 'angular2-uuid';
 import * as $PouchDB from 'pouchdb';
+import { ReplaySubject } from "rxjs";
 const PouchDB = $PouchDB['default'];
 
 @Injectable()
 export class PlayerServiceService {
 
+    private playerSubject = new ReplaySubject(1);
     private player: Player;
     private db: any;
 
     constructor() {
         this.db = new PouchDB('fifteen_db');
+
+        if(localStorage.getItem('player')) {
+            const localStorageUser =  JSON.parse(localStorage.getItem('player'));
+            this.loginUser(localStorageUser.name);
+        }
     }
 
     public getPlayer() {
-        return this.player;
+        return this.playerSubject;
     }
 
     public loginUser( userLogin: string ): Promise<Player> {
@@ -38,6 +45,7 @@ export class PlayerServiceService {
     private createNewUser( userLogin: string ) {
         const uuid = UUID.UUID();
         this.player = new Player( uuid, userLogin );
+        this.playerSubject.next( this.player );
         return this.db.put( this.player).then(function (result) {
             console.log( 'Successfully posted !', result );
             return result;
@@ -53,6 +61,7 @@ export class PlayerServiceService {
             endkey: userId
         }).then( (result) => {
             this.player = new Player( result.rows[0].doc._id, result.rows[0].doc.name );
+            this.playerSubject.next( this.player );
             localStorage.setItem('player', JSON.stringify(this.player));
             return this.player;
         }).catch(function (err) {
