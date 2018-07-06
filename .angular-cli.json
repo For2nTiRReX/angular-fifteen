@@ -20,8 +20,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "fifteen",
       "styles": [
-        "styles.scss",
-        "../src/assets/bootstrap.min.css"
+        "../src/assets/bootstrap.min.css",
+        "styles.scss"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -1,7 +1,20 @@
 <h1 class="page-title">
   Лучшие результаты
 </h1>
-<table class="table">
-  tr>td*
-</table>
-<a routerLink="/">Назад в меню</a>
+<div class="container">
+  <table class="table table-bordered">
+    <tr>
+      <th>№</th>
+      <th>Игрок</th>
+      <th>Время</th>
+      <th>Ходов</th>
+    </tr>
+    <tr *ngFor="let pointItem of topScores | async; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{pointItem.player ? pointItem.player.name : 'Неизвестный игрок'}}</td>
+      <td>{{pointItem.time | secondsToHours}}</td>
+      <td>{{pointItem.moves}}</td>
+    </tr>
+  </table>
+</div>
+

@@ -9,12 +9,11 @@ import { Points } from "../models/points";
 })
 export class TopPlayersComponent implements OnInit {
 
-  public topScores: Promise<Array<Points>>
+  public topScores: Array<Points>;
   constructor(public pointsServiceService: PointsServiceService) { }
 
   ngOnInit() {
     this.topScores = this.pointsServiceService.getTopPlayers(10);
-    console.log(this.topScores);
   }
 
   formatTime( time:number ): string {

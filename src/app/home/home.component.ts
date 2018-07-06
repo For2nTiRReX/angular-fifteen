@@ -14,8 +14,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.playerServiceService.getPlayer().subscribe( player => {
-      console.log(player);
-      this.player = player;
+      if (player instanceof Player) {
+        this.player = player;
+      }
       return;
     } );
   }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalService } from './services/modal.service';
 import {FinishGameComponent} from './popup-components/finish-game/finish-game.component';
-
+import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -11,8 +11,15 @@ import {FinishGameComponent} from './popup-components/finish-game/finish-game.co
 })
 export class AppComponent implements OnInit {
 
-  constructor(private modalService: ModalService) {}
+  private routePath: string;
+
+  constructor(private modalService: ModalService, private router: Router) {}
   ngOnInit () {
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationStart) {
+        this.routePath = event.url;
+      }
+    });
   }
 
   private removeModal() {

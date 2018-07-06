@@ -1,14 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
-
-<div class="container">
-
+<div id="global-app-wrapper">
   <div id="primary-container" class="primary-content-wrapper">
     <router-outlet></router-outlet>
   </div>
-  <!--<div class="popups-holder">-->
-  <!--<order-form></order-form>-->
-  <!--</div>-->
+  <div class="back-to-menu" *ngIf="routePath != '/'">
+    <a routerLink="/">Назад в меню</a>
+  </div>
+  <div id="modal-container" class="hidden"></div>
+  <div id="overlay" (click)="removeModal()" class="hidden"></div>
 </div>
-
-<div id="modal-container" class="hidden"></div>
-<div id="overlay" (click)="removeModal()" class="hidden"></div>

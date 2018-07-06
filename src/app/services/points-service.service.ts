@@ -14,7 +14,11 @@ export class PointsServiceService {
 
   constructor(public playerServiceService: PlayerServiceService) {
       this.db = new PouchDB('fifteen_db_points');
-      this.playerServiceService.getPlayer().subscribe( player => this.player = player );
+      this.playerServiceService.getPlayer().subscribe( player => {
+          if (player instanceof Player) {
+              this.player = player
+          }
+      } );
   }
 
   public getTopPlayers( amount: number ) {

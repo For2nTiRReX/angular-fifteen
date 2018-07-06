@@ -12,9 +12,6 @@ import { Subject } from "rxjs";
 export class TimeCounterComponent implements OnInit {
 
   private seconds: number = 0;
-  private minutes: number = 0;
-  private hours: number = 0;
-  private time: string = "00:00:00";
   private subscription: Subscription;
 
   ngOnInit() {
@@ -31,15 +28,6 @@ export class TimeCounterComponent implements OnInit {
     }
     this.subscription = IntervalObservable.create(1000).subscribe(() => {
       this.seconds++;
-      if (this.seconds >= 60) {
-        this.seconds = 0;
-        this.minutes++;
-        if (this.minutes >= 60) {
-          this.minutes = 0;
-          this.hours++;
-        }
-      }
-      this.time = (this.hours ? (this.hours > 9 ? this.hours : "0" + this.hours) : "00") + ":" + (this.minutes ? (this.minutes > 9 ? this.minutes : "0" + this.minutes) : "00") + ":" + (this.seconds > 9 ? this.seconds : "0" + this.seconds);
     });
   }
 
@@ -54,13 +42,10 @@ export class TimeCounterComponent implements OnInit {
 
   reset(): void {
     this.seconds = 0;
-    this.minutes = 0;
-    this.hours = 0;
-    this.time = "00:00:00";
   }
 
-  public getTime(): string {
-    return this.time;
+  public getTime(): number {
+    return this.seconds;
   }
 
   public getTimeSeconds(): number {

@@ -1,6 +1,11 @@
-<fifteen-time-counter></fifteen-time-counter>
-<div class="moves-counter">
-    {{movesCounter}}
+<h1 class="page-title">Начнем</h1>
+<div class="play-component-meta row align-items-center">
+    <div class="col-md-6 moves-counter">
+        {{movesCounter}}
+    </div>
+    <div class="col-md-6 time-counter">
+        <fifteen-time-counter></fifteen-time-counter>
+    </div>
 </div>
 <div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
     <div *ngFor="let item of tiles"
@@ -9,11 +14,10 @@
             'blank': item.isEmpty === true,
             'right-position': item.isRightPosition()
           }"
-         [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px' }"
+         [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px', 'margin-left' : tileGap / 2 + 'px' }"
          (click)="swapElements($event,item);">
         {{item.label}}
     </div>
 </div>
 <button class="button" id="pause" (click)="toggleActiveGame();">{{isGameActive ? 'Pause' : 'Resume'}}</button>
 <button class="button" id="new_game" (click)="newGame();">New Game</button>
-<a routerLink="/">Back </a>

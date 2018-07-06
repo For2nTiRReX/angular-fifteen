@@ -16,6 +16,7 @@ import { PlayerAuthGuardService } from './services/player-auth-guard.service';
 import { PointsServiceService } from './services/points-service.service';
 import {DomService} from './services/dom.service';
 import {ModalService} from './services/modal.service';
+import { SecondsToHoursPipe } from './pipes/seconds-to-hours.pipe';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {ModalService} from './services/modal.service';
       HomeComponent,
       LoginComponent,
       TopPlayersComponent,
-      TimeCounterComponent
+      TimeCounterComponent,
+      SecondsToHoursPipe
   ],
   imports: [
       RootRoutingModule,
