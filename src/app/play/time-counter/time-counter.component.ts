@@ -11,7 +11,7 @@ import { Subject } from "rxjs";
 })
 export class TimeCounterComponent implements OnInit {
 
-  private seconds: number = 0;
+  public seconds: number = 0;
   private subscription: Subscription;
 
   ngOnInit() {

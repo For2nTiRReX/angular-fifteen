@@ -11,15 +11,15 @@ import { Player } from '../models';
 })
 export class LoginComponent implements OnInit {
 
-  private formErrorMessageBox: string;
-  private messageBoxVisibility: boolean;
-  private loginForm: FormGroup;
+  public formErrorMessageBox: string;
+  public messageBoxVisibility: boolean;
+  public loginForm: FormGroup;
 
-  private formErrors: Object = {
+  public formErrors = {
     'userLogin': '',
   };
 
-  private validationMessages: Object = {
+  public validationMessages = {
     'userLogin': {
       'required': 'Поле обязательно для заполнения.',
       'minlength': 'Введите не мение 4 символов.',
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private login() {
+  public login() {
 
     if ( !this.loginForm.valid ) {
       this.messageBoxVisibility = true;

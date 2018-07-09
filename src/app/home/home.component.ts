@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class HomeComponent implements OnInit {
 
-  private player: Player;
+  public player: Player;
   constructor( private playerServiceService: PlayerServiceService ) {}
 
   ngOnInit() {

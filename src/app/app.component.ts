@@ -11,7 +11,7 @@ import { Router, NavigationStart } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  private routePath: string;
+  public routePath: string;
 
   constructor(private modalService: ModalService, private router: Router) {}
   ngOnInit () {
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private removeModal() {
+  public removeModal() {
       this.modalService.destroy();
   }
 
