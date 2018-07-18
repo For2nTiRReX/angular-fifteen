@@ -91,11 +91,12 @@ export class PlayGameComponent implements OnInit {
          }
          console.log('You win!');
          this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
-         this.modalService.init( FinishGameComponent, {}, {} );
+
          return true;
     }
 
     toggleActiveGame(): boolean {
+        this.modalService.init( FinishGameComponent, {}, {} );
         this.isGameActive = !this.isGameActive;
         this.timerComponent.toggleState(this.isGameActive);
         return this.isGameActive;

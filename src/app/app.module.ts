@@ -17,6 +17,7 @@ import { PointsServiceService } from './services/points-service.service';
 import {DomService} from './services/dom.service';
 import {ModalService} from './services/modal.service';
 import { SecondsToHoursPipe } from './pipes/seconds-to-hours.pipe';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SecondsToHoursPipe } from './pipes/seconds-to-hours.pipe';
       RootRoutingModule,
       BrowserModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      BrowserAnimationsModule
   ],
   providers: [
       PlayerServiceService,

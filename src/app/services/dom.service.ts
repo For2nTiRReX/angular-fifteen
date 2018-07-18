@@ -3,7 +3,7 @@ import {
     Injector,
     ComponentFactoryResolver,
     EmbeddedViewRef,
-    ApplicationRef
+    ApplicationRef, Renderer2
 } from '@angular/core';
 
 import { ChildConfig } from '../models/child-config';
@@ -11,6 +11,7 @@ import { ChildConfig } from '../models/child-config';
 @Injectable()
 export class DomService {
 
+    renderer: Renderer2;
     private childComponentRef: any;
     constructor(
         private componentFactoryResolver: ComponentFactoryResolver,
@@ -35,9 +36,11 @@ export class DomService {
         const childDomElem = (childComponentRef.hostView as EmbeddedViewRef<any>)
             .rootNodes[0] as HTMLElement;
 
-        // Append DOM element to the body
-        document.getElementById(parentId).appendChild(childDomElem);
 
+        // Append DOM element to the body
+        const container = this.renderer.selectRootElement('#' + parentId );
+        this.renderer.appendChild( container, childDomElem );
+        //console.log(container, childDomElem);
     }
 
     public removeComponent() {
