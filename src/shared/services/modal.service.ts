@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DomService } from './dom.service';
 import { Renderer2 } from '@angular/core';
+import { DomService } from 'shared-module/services/dom.service';
 
 @Injectable()
 export class ModalService {

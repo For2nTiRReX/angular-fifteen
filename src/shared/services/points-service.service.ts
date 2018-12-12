@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Points, Player } from '../models';
+import { Points, Player } from 'models/index';
 import { UUID } from 'angular2-uuid';
 import * as $PouchDB from 'pouchdb';
 import { PlayerServiceService } from './player-service.service';

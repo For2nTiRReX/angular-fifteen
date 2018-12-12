@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerServiceService } from "../services/player-service.service";
-import { Player } from "../models/player";
-import { Observable } from 'rxjs/Rx';
+import { Player } from "models/index";
+import { PlayerServiceService } from 'shared-module/services/player-service.service';
+
 @Component({
   selector: 'fifteen-home',
   templateUrl: './home.component.html',

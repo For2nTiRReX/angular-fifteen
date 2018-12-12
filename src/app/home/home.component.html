@@ -1,10 +1,33 @@
-<h1 class="page-title player-title" *ngIf="player && player._id != '0  '">
-  Привет {{ player.name }}
+<h1
+    class="page-title player-title"
+    *ngIf="player && player._id != '0'">
+    Greetings {{ player.name }}
 </h1>
 <nav class="nav main-navigation">
-  <ul>
-    <li><a class="nav-link" routerLink="game" routerLinkActive="active">Играть</a></li>
-    <li><a class="nav-link" routerLink="top-players" routerLinkActive="active">Рекорды</a></li>
-    <li><a class="nav-link" routerLink="login" routerLinkActive="active">Ввести имя</a></li>
-  </ul>
+    <ul>
+        <li>
+            <a
+                class="nav-link"
+                routerLink="game"
+                routerLinkActive="active">
+                Play
+            </a>
+        </li>
+        <li>
+            <a
+                class="nav-link"
+                routerLink="top-scores"
+                routerLinkActive="active">
+                Records
+            </a>
+        </li>
+        <li>
+            <a
+                class="nav-link"
+                routerLink="login"
+                routerLinkActive="active">
+                Log in
+            </a>
+        </li>
+    </ul>
 </nav>

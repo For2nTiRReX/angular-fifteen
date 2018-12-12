@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate , Router } from '@angular/router';
-import { PlayerServiceService } from './player-service.service';
-import { Player } from '../models/player';
+import { PlayerServiceService } from 'shared-module/services/player-service.service';
+import { Player } from 'models/index';
 
 
 @Injectable()

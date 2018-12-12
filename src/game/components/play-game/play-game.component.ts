@@ -1,9 +1,11 @@
-import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { TimeCounterComponent } from '../time-counter/time-counter.component';
-import { Tile } from '../../models/index';
-import { PointsServiceService } from '../../services/points-service.service';
-import { ModalService } from '../../services/modal.service';
-import { FinishGameComponent } from '../../popup-components/finish-game/finish-game.component';
+import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { TimeCounterComponent } from 'game-module/components/time-counter/time-counter.component';
+import { Tile } from 'models/index';
+import { PointsServiceService } from 'shared-module/services/points-service.service';
+import { ModalService } from 'shared-module/services/modal.service';
+import { FinishGamePopupComponent } from 'shared-module/components/finish-game-popup/finish-game-popup.component';
+import { GameBoardConfig } from 'assets/board-config';
+
 
 @Component({
     selector: 'fifteen-play-game',
@@ -22,46 +24,41 @@ export class PlayGameComponent implements OnInit {
     containerWidth: number;
     movesCounter: number;
     isGameActive: boolean;
-    @ViewChild( TimeCounterComponent ) timerComponent: TimeCounterComponent;
+    @ViewChild(TimeCounterComponent) timerComponent: TimeCounterComponent;
 
 
-    constructor( private pointsServiceService: PointsServiceService, private modalService: ModalService) {}
+    constructor(private pointsServiceService: PointsServiceService, private modalService: ModalService) { }
 
     ngOnInit() {
         this.movesCounter = 0;
         this.tiles = [];
-        this.containerWidth = 300;
-        this.tileGap = 6;
-        this.tileWidth = this.containerWidth / 4;
-        this.tileHeight = this.containerWidth / 4;
         this.newGame();
-
     }
 
     public swapElements(event, label) {
 
         let currTileIndex = this.tiles.indexOf(label);
-        const curr = Object.assign({}, this.tiles[currTileIndex]);
-        const empty = Object.assign({}, this.tiles[this.emptyTileIndex]);
+        const curr = { ...this.tiles[currTileIndex] };
+        const empty = { ...this.tiles[this.emptyTileIndex] };
         const positionCurrent = this.tiles[currTileIndex].positionCurrent;
         const positionEmpty = this.tiles[this.emptyTileIndex].positionCurrent;
 
         if (positionCurrent - 1 === positionEmpty && (positionCurrent % 4) !== 0) {
             // console.log('slideleft');
-            this.tiles[currTileIndex].moveTile(-this.tileWidth,0);
-            this.tiles[this.emptyTileIndex].moveTile(this.tileWidth,0);
+            this.tiles[currTileIndex].moveTile(-this.tileWidth, 0);
+            this.tiles[this.emptyTileIndex].moveTile(this.tileWidth, 0);
         } else if (positionCurrent + 1 === positionEmpty && (positionCurrent % 4) !== 3) {
             // console.log('slideright');
-            this.tiles[currTileIndex].moveTile(this.tileWidth,0);
-            this.tiles[this.emptyTileIndex].moveTile(-this.tileWidth,0);
+            this.tiles[currTileIndex].moveTile(this.tileWidth, 0);
+            this.tiles[this.emptyTileIndex].moveTile(-this.tileWidth, 0);
         } else if (positionCurrent - 4 === positionEmpty) {
             // console.log('slideup');
-            this.tiles[currTileIndex].moveTile(0,-this.tileHeight);
-            this.tiles[this.emptyTileIndex].moveTile(0,this.tileHeight);
+            this.tiles[currTileIndex].moveTile(0, -this.tileHeight);
+            this.tiles[this.emptyTileIndex].moveTile(0, this.tileHeight);
         } else if (positionCurrent + 4 === positionEmpty) {
             // console.log('slidedown');
-            this.tiles[currTileIndex].moveTile(0,this.tileHeight);
-            this.tiles[this.emptyTileIndex].moveTile(0,-this.tileHeight);
+            this.tiles[currTileIndex].moveTile(0, this.tileHeight);
+            this.tiles[this.emptyTileIndex].moveTile(0, -this.tileHeight);
         } else {
             // console.log('You ca\'nt do this move');
             return;
@@ -71,7 +68,7 @@ export class PlayGameComponent implements OnInit {
         this.tiles[currTileIndex].positionCurrent = empty.positionCurrent;
         this.tiles[this.emptyTileIndex].positionCurrent = curr.positionCurrent;
 
-        this.tiles.filter( function( element, index ) {
+        this.tiles.filter(function (element, index) {
             if (element.isEmpty) {
                 this.emptyTileIndex = index;
                 return;
@@ -84,19 +81,19 @@ export class PlayGameComponent implements OnInit {
 
 
     public checkWin() {
-         for (let i = 0; i <= 14; i++) {
-             if (+this.tiles[i].label != this.tiles[i].positionCurrent + 1) {
+        for (let i = 0; i <= 14; i++) {
+            if (+this.tiles[i].label != this.tiles[i].positionCurrent + 1) {
                 return false;
-             }
-         }
-         console.log('You win!');
-         this.pointsServiceService.setNewResult( this.movesCounter, this.timerComponent.getTimeSeconds() );
+            }
+        }
+        console.log('You are winner!');
+        this.pointsServiceService.setNewResult(this.movesCounter, this.timerComponent.getTimeSeconds());
 
-         return true;
+        return true;
     }
 
     toggleActiveGame(): boolean {
-        this.modalService.init( FinishGameComponent, {}, {} );
+        this.modalService.init(FinishGamePopupComponent, {}, {});
         this.isGameActive = !this.isGameActive;
         this.timerComponent.toggleState(this.isGameActive);
         return this.isGameActive;
@@ -119,8 +116,8 @@ export class PlayGameComponent implements OnInit {
 
         let k = 0;
         for (let i = 0; i < labelsInit.length / 4; i++) {
-            for (let j = 0;j < labelsInit.length / 4; j++) {
-                this.tiles[k] = new Tile(k,k, labelsInit[k], i * this.tileHeight , j * this.tileWidth,labelsInit[k] === '' ? true : false);
+            for (let j = 0; j < labelsInit.length / 4; j++) {
+                this.tiles[k] = new Tile(k, k, labelsInit[k], i * this.tileHeight, j * this.tileWidth, labelsInit[k] === '' ? true : false);
                 k++;
             }
         }

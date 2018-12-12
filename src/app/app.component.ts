@@ -1,8 +1,7 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
-import { ModalService } from './services/modal.service';
-import {FinishGameComponent} from './popup-components/finish-game/finish-game.component';
 import { Router, NavigationStart } from '@angular/router';
-import { MODAL_ANIMATION } from './animations/animations';
+import { MODAL_ANIMATION } from 'animations/animations';
+import { ModalService } from 'shared-module/services/modal.service';
 
 @Component({
   selector: 'fifteen-root',
@@ -17,6 +16,7 @@ export class AppComponent implements OnInit {
   constructor(private modalService: ModalService, private router: Router, renderer: Renderer2) {
       modalService.renderer = renderer;
   }
+  
   ngOnInit () {
     this.router.events.subscribe(event => {
       if( event instanceof NavigationStart ) {

@@ -4,7 +4,7 @@
     <router-outlet></router-outlet>
   </div>
   <div class="back-to-menu" *ngIf="routePath != '/'">
-    <a routerLink="/">Назад в меню</a>
+    <a routerLink="/">Back to menu</a>
   </div>
   <div id="modal-container" [@modalState]="modalService.modalState" [ngClass]="modalService.modalState" ></div>
   <div id="overlay" [@modalState]="modalService.modalState" (click)="removeModal()"></div>

@@ -1,4 +1,4 @@
-import {Player} from './index';
+import { Player } from './index';
 
 export class Points {
 

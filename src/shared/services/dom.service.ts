@@ -3,10 +3,11 @@ import {
     Injector,
     ComponentFactoryResolver,
     EmbeddedViewRef,
-    ApplicationRef, Renderer2
+    ApplicationRef,
+    Renderer2
 } from '@angular/core';
 
-import { ChildConfig } from '../models/child-config';
+import { ChildConfig } from 'models/child-config';
 
 @Injectable()
 export class DomService {
