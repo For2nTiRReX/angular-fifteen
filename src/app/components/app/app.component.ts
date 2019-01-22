@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   public routePath: string;
 
-  constructor(private modalService: ModalService, private router: Router, renderer: Renderer2) {
+  constructor(public modalService: ModalService, private router: Router, public renderer: Renderer2) {
     modalService.renderer = renderer;
   }
 

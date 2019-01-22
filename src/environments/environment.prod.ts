@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  production: false,
+  gameBoardConfig: {
+    containerWidth: 300,
+    tileGap:6
+  }
 };

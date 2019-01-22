@@ -4,9 +4,11 @@ import { SharedModule } from 'shared-module/shared.module';
 import { GameRoutingModule } from 'game-module/game-routing.module';
 import { PlayGameComponent } from './components/play-game/play-game.component';
 import { TimeCounterComponent } from './components/time-counter/time-counter.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
+    CommonModule,
     SharedModule,
     GameRoutingModule
   ],
