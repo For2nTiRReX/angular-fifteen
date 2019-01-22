@@ -1,4 +1,4 @@
-<h2 class="page-title">Введите имя</h2>
+<h2 class="page-title">Enter the name</h2>
 <div class="login-form-wrapper">
   <form [formGroup]="loginForm"  novalidate>
     <div class="form-group">
@@ -12,11 +12,10 @@
       </div>
     </div>
 
-
     <div *ngIf="messageBoxVisibility" class="alert alert-danger">
       {{formErrorMessageBox}}
     </div>
 
-    <button class="button btn-default" (click)="login()">Авторизация</button>
+    <button class="button btn-default" (click)="login()">Login</button>
   </form>
 </div>

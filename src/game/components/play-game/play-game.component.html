@@ -7,17 +7,6 @@
         <fifteen-time-counter></fifteen-time-counter>
     </div>
 </div>
-<div id="grid" #grid [ngStyle]="{'width': containerWidth+'px','height': containerWidth+'px' }">
-    <div *ngFor="let item of tiles"
-         [ngClass]="{
-            'tile cell': true,
-            'blank': item.isEmpty === true,
-            'right-position': item.isRightPosition()
-          }"
-         [ngStyle]="{'width': tileWidth-tileGap+'px','height': tileHeight-tileGap+'px', 'left': item.positionLeft+'px', 'top': item.positionTop+'px', 'margin-left' : tileGap / 2 + 'px' }"
-         (click)="swapElements($event,item);">
-        {{item.label}}
-    </div>
-</div>
+<fifteen-game-board (incrementMoveCounter)="incrementMoveCounter($event)" (putScore)="setPlayerResult($event)"></fifteen-game-board>  
 <button class="button" id="pause" (click)="toggleActiveGame();">{{isGameActive ? 'Pause' : 'Continue'}}</button>
 <button class="button" id="new_game" (click)="newGame();">New game</button>

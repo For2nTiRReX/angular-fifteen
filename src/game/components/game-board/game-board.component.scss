@@ -1,0 +1,59 @@
+#grid {
+    /*display: grid;
+    grid-template-columns: 80px 80px 80px 80px;*/
+    position: relative;
+    margin: 5px auto 25px;
+  }
+  
+  .cell {
+    position: absolute;
+    line-height: 74px;
+    height: 74px;
+    color: #051d38;
+    border: 1px solid #051d38;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 8px;
+    background: #e4e2da;
+    user-select: none;
+    transition: all .4s ease;
+    &.blank {
+      background: rgba(218, 232, 232, 0.04);
+      border-style: none;
+      box-shadow: none;
+    }
+    &.right-position {
+      border-color: #9ed089;
+      background: #9ed089;
+    }
+    &.hidden {
+      visibility: hidden;
+    }
+    &.winner {
+      background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emoji_Grinning_Face_Smiling_Eyes.svg/128px-Emoji_Grinning_Face_Smiling_Eyes.svg.png);
+      background-size: contain;
+    }
+  }
+  
+  
+  @keyframes slideright {
+    from {transform: translate(0,0)}
+    to { transform: translate(calc(100% + 6px), 0);}
+  }
+  
+  @keyframes slideleft {
+    from {transform: translate(0,0)}
+    to { transform: translate(calc(-100% - 6px), 0);}
+  }
+  
+  @keyframes slideup {
+    from {transform: translate(0,0)}
+    to { transform: translate(0, calc(-100% - 6px));}
+  }
+  
+  @keyframes slidedown {
+    from {transform: translate(0,0)}
+    to { transform: translate(0, calc(+100% + 6px));}
+  }
+  
+  

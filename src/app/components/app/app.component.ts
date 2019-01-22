@@ -1,6 +1,6 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
-import { MODAL_ANIMATION } from 'animations/animations';
+import { MODAL_ANIMATION } from 'shared-module/animations/animations';
 import { ModalService } from 'shared-module/services/modal.service';
 
 @Component({
@@ -14,19 +14,19 @@ export class AppComponent implements OnInit {
   public routePath: string;
 
   constructor(private modalService: ModalService, private router: Router, renderer: Renderer2) {
-      modalService.renderer = renderer;
+    modalService.renderer = renderer;
   }
-  
-  ngOnInit () {
+
+  ngOnInit() {
     this.router.events.subscribe(event => {
-      if( event instanceof NavigationStart ) {
+      if (event instanceof NavigationStart) {
         this.routePath = event.url;
       }
     });
   }
 
   public removeModal() {
-      this.modalService.destroy();
+    this.modalService.destroy();
   }
 
 }

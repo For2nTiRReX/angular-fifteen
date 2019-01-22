@@ -2,18 +2,41 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
     "paths": {
-      "core-module/*": [ "src/app/*" ],
-      "shared-module/*": [ "src/shared/*" ],
-      "game-module/*": ["src/game/*"],
-      "statistic/*": [ "src/statistic/*" ],
-      "login-module/*": [ "src/login/*" ],
-      "models/*": ["src/models/*"],
-      "pipes/*": ["src/pipes/*"],
-      "environments/*": ["src/environments/*"],
-      "assets/*": ["src/assets/*"],
-      "animations/*": ["src/animations/*"],
-      "styles": [ "src/sass/styles.scss" ]
+      "core-module/*": [
+        "src/app/*"
+      ],
+      "shared-module/*": [
+        "src/shared/*"
+      ],
+      "game-module/*": [
+        "src/game/*"
+      ],
+      "statistic-module/*": [
+        "src/statistic/*"
+      ],
+      "login-module/*": [
+        "src/login/*"
+      ],
+      "models/*": [
+        "src/shared/models/*"
+      ],
+      "pipes/*": [
+        "src/shared/pipes/*"
+      ],
+      "environments/*": [
+        "src/environments/*"
+      ],
+      "assets/*": [
+        "src/assets/*"
+      ],
+      "animations/*": [
+        "src/animations/*"
+      ],
+      "styles": [
+        "src/sass/styles.scss"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -29,5 +52,8 @@
       "es2017",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true
   }
 }

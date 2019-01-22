@@ -1,7 +1,17 @@
 <div class="popup-title">
-  Победа!
+  You are the winner!
+</div>
+<div class="score">
+  <div class="row">
+    <div class="col-md-6 moves">
+      Moves: {{moves}}
+    </div>
+    <div class="col-md-6 time">
+      Time: {{time | secondsToHours}}
+    </div>
+  </div>
 </div>
 <ul>
-  <li><a routerLink="/" (click)="closeModal()">В меню</a></li>
-  <li><a routerLink="/top-players" (click)="closeModal()">Рекорды</a></li>
+  <li><a routerLink="/" (click)="closeModal()">Menu</a></li>
+  <li><a routerLink="top-players" (click)="closeModal()">Best scores</a></li>
 </ul>

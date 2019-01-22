@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Player } from '../models/player';
+import { Player } from 'models/index';
 import { UUID } from 'angular2-uuid';
-import * as $PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 import { ReplaySubject } from "rxjs";
-const PouchDB = $PouchDB['default'];
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PlayerServiceService {
 
     private playerSubject = new ReplaySubject(1);
@@ -14,7 +15,7 @@ export class PlayerServiceService {
 
     constructor() {
         this.db = new PouchDB('fifteen_db');
-
+       
         if(localStorage.getItem('player')) {
             const localStorageUser =  JSON.parse(localStorage.getItem('player'));
             this.loginUser(localStorageUser.name);

@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { FinishGamePopupComponent } from 'shared-module/components/finish-game-popup/finish-game-popup.component';
-import { RootRoutingModule } from 'core-module/root-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { SecondsToHoursPipe } from 'shared-module/pipes/seconds-to-hours.pipe';
+import { RouterModule } from '@angular/router';
 
 const MODULES = [
-  RootRoutingModule,
-  BrowserModule,
+  CommonModule,
   FormsModule,
   ReactiveFormsModule,
-  BrowserAnimationsModule
+  RouterModule
 ];
 
 @NgModule({
@@ -18,10 +17,13 @@ const MODULES = [
     ...MODULES
   ],
   exports: [
-    ...MODULES
+    ...MODULES,
+    SecondsToHoursPipe,
+    FinishGamePopupComponent
   ],
   declarations: [
-    FinishGamePopupComponent
+    FinishGamePopupComponent,
+    SecondsToHoursPipe
   ],
   entryComponents: [
     FinishGamePopupComponent

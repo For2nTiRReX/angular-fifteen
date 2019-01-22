@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Points, Player } from 'models/index';
-import { UUID } from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 import * as $PouchDB from 'pouchdb';
 import { PlayerServiceService } from './player-service.service';
 const PouchDB = $PouchDB['default'];
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class PointsServiceService {
 
   private db: any;
@@ -82,13 +84,13 @@ export class PointsServiceService {
               }
           }
       }
-      return UUID.UUID();
+      return uuid();
   }
 
   public createTestDb() {
       const pointsArr = [];
       for ( let i = 0; i < 15; i++ ) {
-          pointsArr.push( new Points( UUID.UUID(), i, i + 25, UUID.UUID() ) );
+          pointsArr.push( new Points( uuid(), i, i + 25, uuid() ) );
       }
       this.db.bulkDocs( pointsArr ).then( (result) => {
           console.log( 'Successfully posted !', result );

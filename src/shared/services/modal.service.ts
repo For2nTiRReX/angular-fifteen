@@ -2,22 +2,22 @@ import { Injectable } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { DomService } from 'shared-module/services/dom.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class ModalService {
 
-    public modalState: string;
+    
     public renderer: Renderer2;
 
-    private modalElementId: string;
-    private overlayElementId: string;
-    private container: HTMLElement;
-    private overlay: HTMLElement;
+    private modalElementId: string = 'modal-container';
+    public modalState: string = 'inactive';
+    
+    // private overlayElementId: string = 'overlay';
+    // private container: HTMLElement;
+    // private overlay: HTMLElement;
 
-    constructor(private domService: DomService) {
-        this.modalElementId  = 'modal-container';
-        this.overlayElementId = 'overlay';
-        this.modalState = 'inactive';
-    }
+    constructor(private domService: DomService) {}
 
     init(component: any, inputs: object, outputs: object) {
         this.domService.renderer = this.renderer;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PointsServiceService } from '../services/points-service.service';
-import { Points } from "../models/points";
+import { Points } from "models/points";
+import { PointsServiceService } from 'shared-module/services/points-service.service';
 
 @Component({
   selector: 'fifteen-top-players',

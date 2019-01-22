@@ -3,8 +3,9 @@ import { CanActivate , Router } from '@angular/router';
 import { PlayerServiceService } from 'shared-module/services/player-service.service';
 import { Player } from 'models/index';
 
-
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class PlayerAuthGuardService implements CanActivate {
 
     constructor( public playerServiceService: PlayerServiceService, private router: Router) {}

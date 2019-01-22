@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PlayerServiceService } from '../services/player-service.service';
-import { Player } from '../models';
+import { PlayerServiceService } from 'shared-module/services/player-service.service';
+import { Player } from 'models/index';
 
 @Component({
   selector: 'fifteen-login',
@@ -21,9 +21,9 @@ export class LoginComponent implements OnInit {
 
   public validationMessages = {
     'userLogin': {
-      'required': 'Поле обязательно для заполнения.',
-      'minlength': 'Введите не мение 4 символов.',
-      'maxlength': 'Введите мение 16 символов.'
+      'required': 'Field required to fill.',
+      'minlength': 'Enter at least 4 symbols.',
+      'maxlength': 'Enter less than 16 symbols.'
     }
   };
 
@@ -70,13 +70,11 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-
     if ( !this.loginForm.valid ) {
       this.messageBoxVisibility = true;
-      this.formErrorMessageBox = 'Форма не валидна попробуйте исправить ошибки полей ввода!';
+      this.formErrorMessageBox = 'Form is invalid!';
       return;
     }
-
     this.playerServiceService
         .loginUser( this.loginForm.get('userLogin').value )
         .then( player => {
@@ -85,5 +83,4 @@ export class LoginComponent implements OnInit {
           }
         });
   }
-
 }

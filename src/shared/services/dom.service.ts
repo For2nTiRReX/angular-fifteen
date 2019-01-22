@@ -9,7 +9,9 @@ import {
 
 import { ChildConfig } from 'models/child-config';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class DomService {
 
     renderer: Renderer2;
